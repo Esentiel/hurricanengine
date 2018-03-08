@@ -10,7 +10,29 @@
 #define FOURCC_DXT5 0x35545844 // Equivalent to "DXT5" in ASCII
 
 
+Texture::Texture()
+{
+}
+
 Texture::Texture(const std::string &filePath)
+{
+	ExtractDDS(filePath);
+}
+
+Texture::~Texture()
+{
+	glDeleteTextures(1, &m_texture);
+}
+
+void Texture::Bind(bool flag)
+{
+	if (flag)
+		glBindTexture(GL_TEXTURE_2D, m_texture);
+	else
+		glBindTexture(GL_TEXTURE_2D, 0);
+}
+
+void Texture::ExtractDDS(const std::string & filePath)
 {
 	unsigned char header[124];
 
@@ -19,7 +41,7 @@ Texture::Texture(const std::string &filePath)
 	fp = fopen(filePath.c_str(), "rb");
 	if (fp == NULL)
 		return;
-	
+
 	// check file type
 	char filecode[4];
 	fread(filecode, 1, 4, fp);
@@ -39,11 +61,11 @@ Texture::Texture(const std::string &filePath)
 
 	unsigned char * buffer;
 	unsigned int bufsize;
-	
+
 	bufsize = mipMapCount > 1 ? linearSize * 2 : linearSize;
 	buffer = new unsigned char[bufsize];
 	fread(buffer, 1, bufsize, fp);
-	
+
 	fclose(fp);
 
 	unsigned int components = (fourCC == FOURCC_DXT1) ? 3 : 4;
@@ -65,7 +87,6 @@ Texture::Texture(const std::string &filePath)
 
 		return;
 	}
-
 
 	// Generate Texture
 	glGenTextures(1, &m_texture);
@@ -94,23 +115,10 @@ Texture::Texture(const std::string &filePath)
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_BASE_LEVEL, 0);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, mipMapCount == 0 ? 0 : mipMapCount - 1);
-	
+
 	glGenerateMipmap(GL_TEXTURE_2D);
 	delete buffer;
 	buffer = nullptr;
 
 	glBindTexture(GL_TEXTURE_2D, 0);
-}
-
-Texture::~Texture()
-{
-	glDeleteTextures(1, &m_texture);
-}
-
-void Texture::Bind(bool flag)
-{
-	if (flag)
-		glBindTexture(GL_TEXTURE_2D, m_texture);
-	else
-		glBindTexture(GL_TEXTURE_2D, 0);
 }

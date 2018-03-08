@@ -2,5 +2,14 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
+    <ClCompile Include="Sources\TextureManagerImp.cpp" />
+    <ClCompile Include="Sources\ResourcesManager.cpp" />
+    <ClCompile Include="Sources\GameManager.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Headers\TextureManagerImp.h" />
+    <ClInclude Include="Headers\TextureManager.h" />
+    <ClInclude Include="Headers\ResourcesManager.h" />
+    <ClInclude Include="Headers\GameManager.h" />
   </ItemGroup>
 </Project>

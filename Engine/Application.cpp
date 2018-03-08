@@ -1,35 +1,16 @@
-#include <Window.h>
-#include <ShaderManager.h>
-#include <Mesh.h>
-#include <Texture.h>
-
-#include <UDP/UDPSocketFactory.h>
-#include <UDP/SocketAddressFactory.h>
-#include <UDP/SocketUtil.h>
-
-
-#define WIN32_LEAN_AND_MEAN
-#define NOMINMAX
-#include <Windows.h>
-#include <WinSock2.h>
-#include <WS2tcpip.h>
-#include <stdint.h>
-#include <memory>
-#include <string>
-#include <vector>
-#include <unordered_map>
-#include <queue>
-#include <iostream>
-#include <algorithm>
-#include <chrono>
-#include "targetver.h"
-
-#include <stdio.h>
-#include <tchar.h>
-
-#pragma comment(lib, "ws2_32.lib")
+//#include <Window.h>
+//#include <ShaderManager.h>
+//#include <Mesh.h>
+//#include <Texture.h>
+//
+//#include <UDP/UDPSocketFactory.h>
+//#include <UDP/SocketAddressFactory.h>
+//#include <UDP/SocketUtil.h>
 
 
+
+
+/*
 int main()
 {
 	// network
@@ -47,11 +28,6 @@ int main()
 		return res;
 
 	socket2->SetNonBlockingMode(true);
-
-
-
-
-
 
 
 	
@@ -113,5 +89,50 @@ int main()
 
 	}
 
+	return 0;
+}
+*/
+
+#include <array>
+
+#include "GameManager.h"
+#include "ResourcesManager.h"
+
+
+int main()
+{
+	// initialize game
+	he::GameManager game;
+	auto window = game.CreateWindow(1027, 768, "HurricaneEngine Welcomes YOU!", {255.f, 255.f, 255.f, 255.f });
+
+	//load resources
+	auto texture = he::ResourcesManager::GetTextureManager()->GetTexture("../../Resources/textures/player.dds");
+
+
+
+	// GAME LOOP
+	//
+	while (window->isActive())
+	{
+		// get data from network
+
+		// async process data from network
+
+		// get inputs/events
+		window->PollEvents();
+
+		// process inputs
+
+		// apply worlds physics
+
+		// draw the scene
+
+		// swap buffers
+		window->SwapBuffers();
+
+		//
+		// END  GAME LOOP
+	}
+	
 	return 0;
 }

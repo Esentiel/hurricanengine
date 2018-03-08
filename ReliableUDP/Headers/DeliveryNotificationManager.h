@@ -17,6 +17,8 @@ class DeliveryNotificationManager
 {
 public:
 	NETWORKLIBRARY_API DeliveryNotificationManager();
+	NETWORKLIBRARY_API ~DeliveryNotificationManager();
+
 	NETWORKLIBRARY_API InFlightPacket* WriteSequenceNumber(OutputMemoryBitStream& inPacket);
 	NETWORKLIBRARY_API bool ProcessSequenceNumber(InputMemoryBitStream& inPacket);
 	NETWORKLIBRARY_API void AddPendingAck(PacketSequenceNumber inSequenceNumber);
@@ -25,7 +27,6 @@ public:
 	NETWORKLIBRARY_API void ProcessTimedOutPackets();
 	NETWORKLIBRARY_API void HandlePacketDeliveryFailure(const InFlightPacket& inFlightPacket);
 	NETWORKLIBRARY_API void HandlePacketDeliverySuccess(const InFlightPacket& inFlightPacket);
-	NETWORKLIBRARY_API ~DeliveryNotificationManager();
 private:
 	PacketSequenceNumber mNextOutgoingSequenceNumber;
 	PacketSequenceNumber mDispatchedPacketCount;

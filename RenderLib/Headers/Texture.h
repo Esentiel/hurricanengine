@@ -13,10 +13,12 @@
 class Texture
 {
 public:
+	RENDERLIBRARY_API Texture();
 	RENDERLIBRARY_API Texture(const std::string &filePath);
 	RENDERLIBRARY_API ~Texture();
 
 	RENDERLIBRARY_API void Bind(bool flag);
+	RENDERLIBRARY_API void ExtractDDS(const std::string &filePath);
 
 	// not copyable
 	Texture(Texture&) = delete;
