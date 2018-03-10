@@ -108,12 +108,18 @@ int main()
 	//load resources
 	auto texture = he::ResourcesManager::GetTextureManager()->GetTexture("../../Resources/textures/player.dds");
 
-
+	// create mesh
+	std::vector<Vertex3> vertecies = { Vertex3(-1.0f, -1.0f, 0.f), Vertex3(0.f, 1.0f, 0.f), Vertex3(1.0f, -1.0f, 0.f) };
+	std::vector<Vertex2> textureCoords = { Vertex2(0.0f, 1.0f - 0.0f), Vertex2(0.5f, 1.0f - 1.0f), Vertex2(1.0f, 1.0f - 0.0f) };
+	auto mesh = game.CreateMesh(vertecies, textureCoords, texture);
 
 	// GAME LOOP
 	//
 	while (window->isActive())
 	{
+		// clear screen
+		window->Clear();
+
 		// get data from network
 
 		// async process data from network
@@ -126,6 +132,7 @@ int main()
 		// apply worlds physics
 
 		// draw the scene
+		game.DrawScene();
 
 		// swap buffers
 		window->SwapBuffers();

@@ -20,8 +20,11 @@ class Mesh
 {
 	friend class Texture;
 public:
+	RENDERLIBRARY_API Mesh();
 	RENDERLIBRARY_API Mesh(const std::vector<Vertex3>& verteciesPosition, const std::vector<Vertex2>& textureCoords, Texture* texture, unsigned int programID);
 	RENDERLIBRARY_API ~Mesh();
+
+	RENDERLIBRARY_API void InitializeEmptyMesh(const std::vector<Vertex3>& verteciesPosition, const std::vector<Vertex2>& textureCoords, Texture* texture, unsigned int programID);
 
 	RENDERLIBRARY_API void Draw(const Camera &camera);
 	RENDERLIBRARY_API void Move(const Vertex3 &pos);
@@ -38,5 +41,7 @@ private:
 	std::unique_ptr<VertexArray> mVerBuffer;
 	std::unique_ptr<Transform> mTransform;
 	unsigned int mProgram;
+
+	void CreateVertexArrayBuffer(const std::vector<Vertex3>& verteciesPosition, const std::vector<Vertex2>& textureCoords);
 };
 
