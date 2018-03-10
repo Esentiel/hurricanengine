@@ -1,14 +1,15 @@
 #include "Camera.h"
 
 #include <glm/glm.hpp>
+#include <glm/gtx/transform.hpp>
 
 
-Camera::Camera(const Vertex3& pos, float fov, float aspect, float zNear, float zFar) :
+Camera::Camera(const Vertex3f& pos, float fov, float aspect, float zNear, float zFar) :
 	mPos(pos),
-	mForward(glm::vec3(0.0f, 0.0f, 1.0f)),
-	mUp(glm::vec3(0.0f, 1.0f, 0.0f)),
-	mProjection(glm::perspective(fov, aspect, zNear, zFar))
+	mForward(0.0f, 0.0f, 1.0f),
+	mUp(0.0f, 1.0f, 0.0f)
 {
+	mProjection.SetMat4(&glm::perspective(fov, aspect, zNear, zFar));
 }
 
 
@@ -17,7 +18,14 @@ Camera::~Camera()
 }
 
 
-glm::mat4 Camera::GetViewProjection() const
+Matrix4 Camera::GetViewProjection() const
 {
-	return mProjection * glm::lookAt(mPos.GetGLM(), mPos.GetGLM() + mForward.GetGLM(), mUp.GetGLM());
+	const auto eye = GetGLMVec<glm::vec3>(mPos);
+	const auto center = eye + GetGLMVec<glm::vec3>(mForward);
+	const auto up = GetGLMVec<glm::vec3>(mUp);
+
+	const auto oldM = *mProjection.GetMat4();
+	const auto newM = oldM * glm::lookAt(eye, center, up);
+
+	return std::move(newM);
 }

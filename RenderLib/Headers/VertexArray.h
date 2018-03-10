@@ -17,8 +17,8 @@ public:
 	VertexArray();
 	~VertexArray();
 
-	RENDERLIBRARY_API void BindVertexCoords(const std::vector<Vertex3> &vertexCoords);
-	RENDERLIBRARY_API void BindTextureCoords(const std::vector<Vertex2> &TextureCoords);
+	RENDERLIBRARY_API void BindVertexCoords(const std::vector<Vertex3f> &vertexCoords);
+	RENDERLIBRARY_API void BindTextureCoords(const std::vector<Vertex2f> &TextureCoords);
 	unsigned int RENDERLIBRARY_API GetVertexArrayObject() const { return mVertexArrayObject; }
 
 	// not copyable

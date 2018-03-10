@@ -1,8 +1,10 @@
 #include "Transform.h"
 
+#include <glm/glm.hpp>
+#include <glm/gtx/transform.hpp>
 
 
-Transform::Transform(const Vertex3 &pos, const Vertex3 &rot, const Vertex3 &scale) :
+Transform::Transform(const Vertex3f &pos, const Vertex3f &rot, const Vertex3f &scale) :
 	mPos(pos),
 	mRot(rot),
 	mScale(scale)
@@ -15,16 +17,17 @@ Transform::~Transform()
 {
 }
 
-const glm::mat4& Transform::GetModel()
+const Matrix4& Transform::GetModel()
 {
-	glm::mat4 posMat = glm::translate(mPos.GetGLM());
-	glm::mat4 scaleMat = glm::scale(mScale.GetGLM());
-	glm::mat4 rotX = glm::rotate(mRot.GetGLM().x, glm::vec3(1.0, 0.0, 0.0));
-	glm::mat4 rotY = glm::rotate(mRot.GetGLM().y, glm::vec3(0.0, 1.0, 0.0));
-	glm::mat4 rotZ = glm::rotate(mRot.GetGLM().z, glm::vec3(0.0, 0.0, 1.0));
-	glm::mat4 rotMat = rotX * rotY * rotZ;
+	const glm::mat4 posMat = glm::translate(GetGLMVec<glm::vec3>(mPos));
+	const glm::mat4 scaleMat = glm::scale(GetGLMVec<glm::vec3>(mScale));
+	const glm::mat4 rotX = glm::rotate(mRot.x(), glm::vec3(1.0, 0.0, 0.0));
+	const glm::mat4 rotY = glm::rotate(mRot.y(), glm::vec3(0.0, 1.0, 0.0));
+	const glm::mat4 rotZ = glm::rotate(mRot.z(), glm::vec3(0.0, 0.0, 1.0));
+	const glm::mat4 rotMat = rotX * rotY * rotZ;
 
-	mModel =  posMat * rotMat * scaleMat;
+	const auto newModel = posMat * rotMat * scaleMat;
+	mModel.SetMat4(&newModel);
 
 	return mModel;
 }

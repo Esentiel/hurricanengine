@@ -19,9 +19,9 @@ namespace he {
 		~GameManager();
 
 		Window* CreateWindow(size_t width, size_t height, const std::string& title, std::array<float, 4> color);
-		Camera* CreateCamera(const Vertex3& pos = Vertex3(0.5f, 0.5f, -3), float fov = 70.f, float zNear = 0.01f, float zFar = 100.0f);
+		Camera* CreateCamera(const Vertex3f& pos = Vertex3f(0.5f, 0.5f, -3), float fov = 70.f, float zNear = 0.01f, float zFar = 100.0f);
 
-		Mesh* CreateMesh(const std::vector<Vertex3>& verteciesPosition, const std::vector<Vertex2>& textureCoords, Texture* texture);
+		Mesh* CreateMesh(const std::vector<Vertex3f>& verteciesPosition, const std::vector<Vertex2f>& textureCoords, Texture* texture);
 		void DrawScene();
 
 	private:

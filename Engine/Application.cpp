@@ -109,9 +109,12 @@ int main()
 	auto texture = he::ResourcesManager::GetTextureManager()->GetTexture("../../Resources/textures/player.dds");
 
 	// create mesh
-	std::vector<Vertex3> vertecies = { Vertex3(-1.0f, -1.0f, 0.f), Vertex3(0.f, 1.0f, 0.f), Vertex3(1.0f, -1.0f, 0.f) };
-	std::vector<Vertex2> textureCoords = { Vertex2(0.0f, 1.0f - 0.0f), Vertex2(0.5f, 1.0f - 1.0f), Vertex2(1.0f, 1.0f - 0.0f) };
+	std::vector<Vertex3f> vertecies = { Vertex3f(-1.0f, -1.0f, 0.f), Vertex3f(0.f, 1.0f, 0.f), Vertex3f(1.0f, -1.0f, 0.f) };
+	std::vector<Vertex2f> textureCoords = { Vertex2f(0.0f, 1.0f - 0.0f), Vertex2f(0.5f, 1.0f - 1.0f), Vertex2f(1.0f, 1.0f - 0.0f) };
 	auto mesh = game.CreateMesh(vertecies, textureCoords, texture);
+
+	// debug
+	float counter = 0.0f;
 
 	// GAME LOOP
 	//
@@ -128,6 +131,14 @@ int main()
 		window->PollEvents();
 
 		// process inputs
+		if (window->CheckKeyStatus(Window::KeyCode::KEY_UP, Window::KeyStatus::KEY_PRESS))
+		{
+			mesh->Move(Vertex3f(sin(counter), 0, 0));
+			mesh->Rotate(Vertex3f(0, 0, sin(counter)));
+			mesh->Scale(Vertex3f(sin(counter), sin(counter), 0));
+
+			counter += 0.01f;
+		}
 
 		// apply worlds physics
 

@@ -23,7 +23,7 @@ VertexArray::~VertexArray()
 }
 
 
-void VertexArray::BindVertexCoords(const std::vector<Vertex3> &vertexCoords)
+void VertexArray::BindVertexCoords(const std::vector<Vertex3f> &vertexCoords)
 {
 	glBindVertexArray(mVertexArrayObject);
 
@@ -36,7 +36,7 @@ void VertexArray::BindVertexCoords(const std::vector<Vertex3> &vertexCoords)
 	glBindVertexArray(0);
 }
 
-void VertexArray::BindTextureCoords(const std::vector<Vertex2> &TextureCoords)
+void VertexArray::BindTextureCoords(const std::vector<Vertex2f> &TextureCoords)
 {
 	glBindVertexArray(mVertexArrayObject);
 

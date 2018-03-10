@@ -4,7 +4,7 @@
 #include <glm/glm.hpp>
 #include <glm/gtx/transform.hpp>
 
-Mesh::Mesh(const std::vector<Vertex3>& verteciesPosition, const std::vector<Vertex2>& textureCoords, Texture* texture, GLuint programID) :
+Mesh::Mesh(const std::vector<Vertex3f>& verteciesPosition, const std::vector<Vertex2f>& textureCoords, Texture* texture, GLuint programID) :
 	mDrawCount(verteciesPosition.size()),
 	mTexture(texture),
 	mProgram(programID)
@@ -25,7 +25,7 @@ Mesh::~Mesh()
 {
 }
 
-void Mesh::InitializeEmptyMesh(const std::vector<Vertex3>& verteciesPosition, const std::vector<Vertex2>& textureCoords, Texture * texture, unsigned int programID)
+void Mesh::InitializeEmptyMesh(const std::vector<Vertex3f>& verteciesPosition, const std::vector<Vertex2f>& textureCoords, Texture * texture, unsigned int programID)
 {
 	if (mDrawCount)
 		return;
@@ -55,35 +55,37 @@ void Mesh::Draw(const Camera &camera)
 	mTexture->Bind(false);
 
 	// update position
-	auto MVP = camera.GetViewProjection() * mTransform->GetModel();
+	const auto veiwProj = *(camera.GetViewProjection().GetMat4());
+	const auto modeltransform = *(mTransform->GetModel().GetMat4());
+	auto MVP = veiwProj * modeltransform;
 	glUniformMatrix4fv(mProgram, 1, GL_FALSE, &MVP[0][0]);
 }
 
-void Mesh::Move(const Vertex3 & pos)
+void Mesh::Move(const Vertex3f & pos)
 {
 	mTransform->SetPos(pos);
 }
 
-void Mesh::Rotate(const Vertex3 & pos)
+void Mesh::Rotate(const Vertex3f & pos)
 {
 	mTransform->SetRot(pos);
 }
 
-void Mesh::Scale(const Vertex3 & pos)
+void Mesh::Scale(const Vertex3f & pos)
 {
 	mTransform->SetScale(pos);
 }
 
-void Mesh::CreateVertexArrayBuffer(const std::vector<Vertex3>& verteciesPosition, const std::vector<Vertex2>& textureCoords)
+void Mesh::CreateVertexArrayBuffer(const std::vector<Vertex3f>& verteciesPosition, const std::vector<Vertex2f>& textureCoords)
 {
 	// create VertexArrayBuffer
 	mVerBuffer = std::make_unique<VertexArray>();
 	mVerBuffer->BindVertexCoords(verteciesPosition);
 	mVerBuffer->BindTextureCoords(textureCoords);
 
-	mTransform = std::make_unique<Transform>(Vertex3());
+	mTransform = std::make_unique<Transform>(Vertex3f());
 
-	auto model = mTransform->GetModel();
+	auto model = *(mTransform->GetModel().GetMat4());
 
 	glUniformMatrix4fv(mProgram, 1, GL_FALSE, &model[0][0]);
 }

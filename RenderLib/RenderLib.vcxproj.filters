@@ -16,6 +16,7 @@
     <ClCompile Include="Sources\VertexArray.cpp" />
     <ClCompile Include="Sources\Transform.cpp" />
     <ClCompile Include="Sources\Camera.cpp" />
+    <ClCompile Include="Sources\Matrix4.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Headers\Window.h" />
@@ -26,5 +27,6 @@
     <ClInclude Include="Headers\VertexArray.h" />
     <ClInclude Include="Headers\Transform.h" />
     <ClInclude Include="Headers\Camera.h" />
+    <ClInclude Include="Headers\Matrix4.h" />
   </ItemGroup>
 </Project>

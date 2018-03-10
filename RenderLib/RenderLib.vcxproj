@@ -245,6 +245,7 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
   <ItemGroup>
     <ClCompile Include="Sources\Camera.cpp" />
     <ClCompile Include="Source.cpp" />
+    <ClCompile Include="Sources\Matrix4.cpp" />
     <ClCompile Include="Sources\Mesh.cpp" />
     <ClCompile Include="Sources\ShaderManager.cpp" />
     <ClCompile Include="Sources\Texture.cpp" />
@@ -268,6 +269,7 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Headers\Camera.h" />
+    <ClInclude Include="Headers\Matrix4.h" />
     <ClInclude Include="Headers\Mesh.h" />
     <ClInclude Include="Headers\ShaderManager.h" />
     <ClInclude Include="Headers\Texture.h" />

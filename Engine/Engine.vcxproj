@@ -83,7 +83,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)RenderLib\Headers;$(SolutionDir)ReliableUDP\Headers;$(SolutionDir)ThirdParty\glm-0.9.7.1;$(SolutionDir)Engine\Headers;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)RenderLib\Headers;$(SolutionDir)ReliableUDP\Headers;$(SolutionDir)Engine\Headers;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>$(SolutionDir)Bin\$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -98,7 +98,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)RenderLib\Headers;$(SolutionDir)ReliableUDP\Headers;$(SolutionDir)ThirdParty\glm-0.9.7.1;$(SolutionDir)Engine\Headers;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)RenderLib\Headers;$(SolutionDir)ReliableUDP\Headers;$(SolutionDir)Engine\Headers;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -115,7 +115,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)RenderLib\Headers;$(SolutionDir)ReliableUDP\Headers;$(SolutionDir)ThirdParty\glm-0.9.7.1;$(SolutionDir)Engine\Headers;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)RenderLib\Headers;$(SolutionDir)ReliableUDP\Headers;$(SolutionDir)Engine\Headers;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>

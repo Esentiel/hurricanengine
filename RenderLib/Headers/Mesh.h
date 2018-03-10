@@ -21,15 +21,15 @@ class Mesh
 	friend class Texture;
 public:
 	RENDERLIBRARY_API Mesh();
-	RENDERLIBRARY_API Mesh(const std::vector<Vertex3>& verteciesPosition, const std::vector<Vertex2>& textureCoords, Texture* texture, unsigned int programID);
+	RENDERLIBRARY_API Mesh(const std::vector<Vertex3f>& verteciesPosition, const std::vector<Vertex2f>& textureCoords, Texture* texture, unsigned int programID);
 	RENDERLIBRARY_API ~Mesh();
 
-	RENDERLIBRARY_API void InitializeEmptyMesh(const std::vector<Vertex3>& verteciesPosition, const std::vector<Vertex2>& textureCoords, Texture* texture, unsigned int programID);
+	RENDERLIBRARY_API void InitializeEmptyMesh(const std::vector<Vertex3f>& verteciesPosition, const std::vector<Vertex2f>& textureCoords, Texture* texture, unsigned int programID);
 
 	RENDERLIBRARY_API void Draw(const Camera &camera);
-	RENDERLIBRARY_API void Move(const Vertex3 &pos);
-	RENDERLIBRARY_API void Rotate(const Vertex3 &pos);
-	RENDERLIBRARY_API void Scale(const Vertex3 &pos);
+	RENDERLIBRARY_API void Move(const Vertex3f &pos);
+	RENDERLIBRARY_API void Rotate(const Vertex3f &pos);
+	RENDERLIBRARY_API void Scale(const Vertex3f &pos);
 	RENDERLIBRARY_API Transform& GetTransform() { return *mTransform; }
 
 	// not copybale
@@ -42,6 +42,6 @@ private:
 	std::unique_ptr<Transform> mTransform;
 	unsigned int mProgram;
 
-	void CreateVertexArrayBuffer(const std::vector<Vertex3>& verteciesPosition, const std::vector<Vertex2>& textureCoords);
+	void CreateVertexArrayBuffer(const std::vector<Vertex3f>& verteciesPosition, const std::vector<Vertex2f>& textureCoords);
 };
 

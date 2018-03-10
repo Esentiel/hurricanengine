@@ -48,7 +48,7 @@ Window* he::GameManager::CreateWindow(size_t width, size_t height, const std::st
 	}
 }
 
-Camera * he::GameManager::CreateCamera(const Vertex3& pos, float fov, float zNear, float zFar)
+Camera * he::GameManager::CreateCamera(const Vertex3f& pos, float fov, float zNear, float zFar)
 {
 	if (mWindow == nullptr)
 		throw std::exception("Create Window first!");
@@ -58,7 +58,7 @@ Camera * he::GameManager::CreateCamera(const Vertex3& pos, float fov, float zNea
 	return mCamera.get();
 }
 
-Mesh * he::GameManager::CreateMesh(const std::vector<Vertex3>& verteciesPosition, const std::vector<Vertex2>& textureCoords, Texture * texture)
+Mesh * he::GameManager::CreateMesh(const std::vector<Vertex3f>& verteciesPosition, const std::vector<Vertex2f>& textureCoords, Texture * texture)
 {
 	const size_t meshesCnt = mMeshStorage->size();
 	mMeshStorage->at(mMeshesHead).InitializeEmptyMesh(verteciesPosition, textureCoords, texture, mProgramID);
