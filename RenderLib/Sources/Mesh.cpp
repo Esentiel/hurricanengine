@@ -10,20 +10,33 @@ Mesh::Mesh(const std::vector<Vertex3>& verteciesPosition, const std::vector<Vert
 	mProgram(programID)
 {
 	// create VertexArrayBuffer
-	mVerBuffer = std::make_unique<VertexArray>();
-	mVerBuffer->BindVertexCoords(verteciesPosition);
-	mVerBuffer->BindTextureCoords(textureCoords);
-
-	mTransform = std::make_unique<Transform>(Vertex3());
-
-	auto model = mTransform->GetModel();
-
-	glUniformMatrix4fv(programID, 1, GL_FALSE, &model[0][0]);
+	CreateVertexArrayBuffer(verteciesPosition, textureCoords);
 }
 
 
+Mesh::Mesh() :
+	mDrawCount(0),
+	mTexture(nullptr),
+	mProgram(0)
+{
+}
+
 Mesh::~Mesh()
 {
+}
+
+void Mesh::InitializeEmptyMesh(const std::vector<Vertex3>& verteciesPosition, const std::vector<Vertex2>& textureCoords, Texture * texture, unsigned int programID)
+{
+	if (mDrawCount)
+		return;
+
+	// initialize params
+	mDrawCount = verteciesPosition.size();
+	mTexture = texture;
+	mProgram = programID;
+
+	// create VertexArrayBuffer
+	CreateVertexArrayBuffer(verteciesPosition, textureCoords);
 }
 
 void Mesh::Draw(const Camera &camera)
@@ -59,4 +72,18 @@ void Mesh::Rotate(const Vertex3 & pos)
 void Mesh::Scale(const Vertex3 & pos)
 {
 	mTransform->SetScale(pos);
+}
+
+void Mesh::CreateVertexArrayBuffer(const std::vector<Vertex3>& verteciesPosition, const std::vector<Vertex2>& textureCoords)
+{
+	// create VertexArrayBuffer
+	mVerBuffer = std::make_unique<VertexArray>();
+	mVerBuffer->BindVertexCoords(verteciesPosition);
+	mVerBuffer->BindTextureCoords(textureCoords);
+
+	mTransform = std::make_unique<Transform>(Vertex3());
+
+	auto model = mTransform->GetModel();
+
+	glUniformMatrix4fv(mProgram, 1, GL_FALSE, &model[0][0]);
 }
