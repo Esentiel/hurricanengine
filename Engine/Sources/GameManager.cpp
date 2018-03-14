@@ -1,11 +1,9 @@
-#include "GameManager.h"
+#include "eng_stdafx.h"
 
-#include <exception>
+#include "GameManager.h"
 
 #include "ResourcesManager.h"
 #include "TextureManagerImp.h"
-
-
 
 he::GameManager::GameManager() :
 	mMeshStorage(std::make_unique<Meshes>()),
@@ -51,7 +49,7 @@ Window* he::GameManager::CreateWindow(size_t width, size_t height, const std::st
 Camera * he::GameManager::CreateCamera(const Vertex3f& pos, float fov, float zNear, float zFar)
 {
 	if (mWindow == nullptr)
-		throw std::exception("Create Window first!");
+		nullptr;
 	auto cam = std::make_unique<Camera>(pos, fov, (float)mWindow->GetWidth() / (float)mWindow->GetHeight(), zNear, zFar);
 	mCamera.swap(cam);
 

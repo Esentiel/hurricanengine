@@ -1,3 +1,5 @@
+
+#include "eng_stdafx.h"
 #include "TextureManagerImp.h"
 
 
