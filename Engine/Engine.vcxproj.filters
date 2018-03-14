@@ -5,13 +5,13 @@
     <ClCompile Include="Sources\TextureManagerImp.cpp" />
     <ClCompile Include="Sources\ResourcesManager.cpp" />
     <ClCompile Include="Sources\GameManager.cpp" />
-    <ClCompile Include="Sources\eng_stdafx.cpp" />
+    <ClCompile Include="stdafx.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Headers\TextureManagerImp.h" />
     <ClInclude Include="Headers\TextureManager.h" />
     <ClInclude Include="Headers\ResourcesManager.h" />
     <ClInclude Include="Headers\GameManager.h" />
-    <ClInclude Include="Headers\eng_stdafx.h" />
+    <ClInclude Include="stdafx.h" />
   </ItemGroup>
 </Project>

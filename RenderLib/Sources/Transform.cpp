@@ -1,3 +1,6 @@
+#include "stdafx.h"
+
+
 #include "Transform.h"
 
 #include <glm/glm.hpp>

@@ -93,7 +93,7 @@ int main()
 }
 */
 
-#include "eng_stdafx.h"
+#include "stdafx.h"
 #include <array>
 
 #include "GameManager.h"

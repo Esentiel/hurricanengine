@@ -1,3 +1,5 @@
+#include "stdafx.h"
+
 //#include <Window.h>
 //#include "ShaderManager.h"
 //#include "Mesh.h"

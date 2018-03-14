@@ -68,7 +68,7 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>$(SolutionDir)ThirdParty\glfw-3.1.2\include\GLFW;$(SolutionDir)ThirdParty\glm-0.9.7.1;$(SolutionDir)ThirdParty\glew-1.13.0\include;.\Headers;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)ThirdParty\glfw-3.1.2\include\GLFW;$(SolutionDir)ThirdParty\glm-0.9.7.1;$(SolutionDir)ThirdParty\glew-1.13.0\include;.\Headers;%(AdditionalIncludeDirectories);$(ProjectDir)</AdditionalIncludeDirectories>
       <AssemblerListingLocation>Debug/</AssemblerListingLocation>
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>
       <CompileAs>CompileAsCpp</CompileAs>
@@ -77,7 +77,7 @@
       <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <Optimization>Disabled</Optimization>
-      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeader>Use</PrecompiledHeader>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
       <WarningLevel>Level3</WarningLevel>
@@ -127,14 +127,14 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>$(SolutionDir)ThirdParty\glfw-3.1.2\include\GLFW;$(SolutionDir)ThirdParty\glm-0.9.7.1;$(SolutionDir)ThirdParty\glew-1.13.0\include;.\Headers;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)ThirdParty\glfw-3.1.2\include\GLFW;$(SolutionDir)ThirdParty\glm-0.9.7.1;$(SolutionDir)ThirdParty\glew-1.13.0\include;.\Headers;%(AdditionalIncludeDirectories);$(ProjectDir)</AdditionalIncludeDirectories>
       <AssemblerListingLocation>Release/</AssemblerListingLocation>
       <CompileAs>CompileAsCpp</CompileAs>
       <ExceptionHandling>Sync</ExceptionHandling>
       <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <Optimization>MaxSpeed</Optimization>
-      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeader>Use</PrecompiledHeader>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
       <WarningLevel>Level3</WarningLevel>
@@ -186,7 +186,7 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>$(SolutionDir)ThirdParty\glfw-3.1.2\include\GLFW;$(SolutionDir)ThirdParty\glm-0.9.7.1;$(SolutionDir)ThirdParty\glew-1.13.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)ThirdParty\glfw-3.1.2\include\GLFW;$(SolutionDir)ThirdParty\glm-0.9.7.1;$(SolutionDir)ThirdParty\glew-1.13.0\include;%(AdditionalIncludeDirectories);$(ProjectDir)</AdditionalIncludeDirectories>
       <AssemblerListingLocation>RelWithDebInfo/</AssemblerListingLocation>
       <CompileAs>CompileAsCpp</CompileAs>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
@@ -194,7 +194,7 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
       <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <Optimization>MaxSpeed</Optimization>
-      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeader>Use</PrecompiledHeader>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
       <WarningLevel>Level3</WarningLevel>
@@ -247,6 +247,14 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
     <ClCompile Include="Source.cpp" />
     <ClCompile Include="Sources\Matrix4.cpp" />
     <ClCompile Include="Sources\Mesh.cpp" />
+    <ClCompile Include="stdafx.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">stdafx.h</PrecompiledHeaderFile>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">stdafx.h</PrecompiledHeaderFile>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">stdafx.h</PrecompiledHeaderFile>
+    </ClCompile>
     <ClCompile Include="Sources\ShaderManager.cpp" />
     <ClCompile Include="Sources\Texture.cpp" />
     <ClCompile Include="Sources\Transform.cpp" />
@@ -271,6 +279,7 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
     <ClInclude Include="Headers\Camera.h" />
     <ClInclude Include="Headers\Matrix4.h" />
     <ClInclude Include="Headers\Mesh.h" />
+    <ClInclude Include="stdafx.h" />
     <ClInclude Include="Headers\ShaderManager.h" />
     <ClInclude Include="Headers\Texture.h" />
     <ClInclude Include="Headers\Transform.h" />
