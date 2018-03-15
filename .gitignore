@@ -13,9 +13,9 @@
 *.userprefs
 
 # Build results
-[Dd]ebug/
+
 [Dd]ebugPublic/
-[Rr]elease/
+
 [Rr]eleases/
 x64/
 x86/
@@ -55,7 +55,7 @@ artifacts/
 *.meta
 *.obj
 *.pch
-*.pdb
+.pdb
 *.pgc
 *.pgd
 *.rsp

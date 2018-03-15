@@ -84,39 +84,20 @@
       <PreprocessorDefinitions>WIN32;_WINDOWS;RENDERLIBRARY_EXPORTS;TW_STATIC;TW_NO_LIB_PRAGMA;TW_NO_DIRECT3D;GLEW_STATIC;_CRT_SECURE_NO_WARNINGS;CMAKE_INTDIR="Debug";%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ObjectFileName>$(IntDir)</ObjectFileName>
     </ClCompile>
-    <ResourceCompile>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;TW_STATIC;TW_NO_LIB_PRAGMA;TW_NO_DIRECT3D;GLEW_STATIC;_CRT_SECURE_NO_WARNINGS;CMAKE_INTDIR=\"Debug\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>C:\Users\Artem\Downloads\ogl-master\external\AntTweakBar-1.16\include;C:\Users\Artem\Downloads\ogl-master\external\glfw-3.1.2\include\GLFW;C:\Users\Artem\Downloads\ogl-master\external\glm-0.9.7.1;C:\Users\Artem\Downloads\ogl-master\external\glew-1.13.0\include;C:\Users\Artem\Downloads\ogl-master\external\assimp-3.0.1270\include;C:\Users\Artem\Downloads\ogl-master\external\bullet-2.81-rev2613\src;C:\Users\Artem\Downloads\ogl-master\.;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-    </ResourceCompile>
-    <Midl>
-      <AdditionalIncludeDirectories>C:\Users\Artem\Downloads\ogl-master\external\AntTweakBar-1.16\include;C:\Users\Artem\Downloads\ogl-master\external\glfw-3.1.2\include\GLFW;C:\Users\Artem\Downloads\ogl-master\external\glm-0.9.7.1;C:\Users\Artem\Downloads\ogl-master\external\glew-1.13.0\include;C:\Users\Artem\Downloads\ogl-master\external\assimp-3.0.1270\include;C:\Users\Artem\Downloads\ogl-master\external\bullet-2.81-rev2613\src;C:\Users\Artem\Downloads\ogl-master\.;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
-      <HeaderFileName>%(Filename).h</HeaderFileName>
-      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
-      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
-      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
-    </Midl>
     <PostBuildEvent>
       <Message>
       </Message>
-      <Command>setlocal
-"C:\Program Files\CMake\bin\cmake.exe" -E copy "C:/Users/Artem/Documents/Visual Studio 2017/Projects/opengl_2/$(Configuration)/tutorial01_first_window.exe" C:/Users/Artem/Downloads/ogl-master/tutorial01_first_window/
-if %errorlevel% neq 0 goto :cmEnd
-:cmEnd
-endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
-:cmErrorLevel
-exit /b %1
-:cmDone
-if %errorlevel% neq 0 goto :VCEnd</Command>
+      <Command>
+      </Command>
     </PostBuildEvent>
     <Link>
-      <AdditionalDependencies>opengl32.lib;glu32.lib;$(SolutionDir)ThirdParty\glfw-3.1.2\lib\Debug\glfw3.lib;$(SolutionDir)ThirdParty\glew-1.13.0\lib\Debug\GLEW_1130.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
-      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>opengl32.lib;glu32.lib;glfw3.lib;GLEW_1130.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)ThirdParty\glfw-3.1.2\lib\Debug;$(SolutionDir)ThirdParty\glew-1.13.0\lib\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
       <ImportLibrary>$(OutDir)$(TargetName).lib</ImportLibrary>
-      <ProgramDataBaseFile>C:/Users/Artem/Documents/Visual Studio 2017/Projects/opengl_2/Debug/tutorial01_first_window.pdb</ProgramDataBaseFile>
+      <ProgramDataBaseFile>$(OutDir)$(TargetName).pdb</ProgramDataBaseFile>
       <SubSystem>Console</SubSystem>
       <ModuleDefinitionFile>
       </ModuleDefinitionFile>
@@ -143,39 +124,20 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
       <DebugInformationFormat>
       </DebugInformationFormat>
     </ClCompile>
-    <ResourceCompile>
-      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;TW_STATIC;TW_NO_LIB_PRAGMA;TW_NO_DIRECT3D;GLEW_STATIC;_CRT_SECURE_NO_WARNINGS;CMAKE_INTDIR=\"Release\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>C:\Users\Artem\Downloads\ogl-master\external\AntTweakBar-1.16\include;C:\Users\Artem\Downloads\ogl-master\external\glfw-3.1.2\include\GLFW;C:\Users\Artem\Downloads\ogl-master\external\glm-0.9.7.1;C:\Users\Artem\Downloads\ogl-master\external\glew-1.13.0\include;C:\Users\Artem\Downloads\ogl-master\external\assimp-3.0.1270\include;C:\Users\Artem\Downloads\ogl-master\external\bullet-2.81-rev2613\src;C:\Users\Artem\Downloads\ogl-master\.;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-    </ResourceCompile>
-    <Midl>
-      <AdditionalIncludeDirectories>C:\Users\Artem\Downloads\ogl-master\external\AntTweakBar-1.16\include;C:\Users\Artem\Downloads\ogl-master\external\glfw-3.1.2\include\GLFW;C:\Users\Artem\Downloads\ogl-master\external\glm-0.9.7.1;C:\Users\Artem\Downloads\ogl-master\external\glew-1.13.0\include;C:\Users\Artem\Downloads\ogl-master\external\assimp-3.0.1270\include;C:\Users\Artem\Downloads\ogl-master\external\bullet-2.81-rev2613\src;C:\Users\Artem\Downloads\ogl-master\.;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
-      <HeaderFileName>%(Filename).h</HeaderFileName>
-      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
-      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
-      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
-    </Midl>
     <PostBuildEvent>
       <Message>
       </Message>
-      <Command>setlocal
-"C:\Program Files\CMake\bin\cmake.exe" -E copy "C:/Users/Artem/Documents/Visual Studio 2017/Projects/opengl_2/$(Configuration)/tutorial01_first_window.exe" C:/Users/Artem/Downloads/ogl-master/tutorial01_first_window/
-if %errorlevel% neq 0 goto :cmEnd
-:cmEnd
-endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
-:cmErrorLevel
-exit /b %1
-:cmDone
-if %errorlevel% neq 0 goto :VCEnd</Command>
+      <Command>
+      </Command>
     </PostBuildEvent>
     <Link>
-      <AdditionalDependencies>opengl32.lib;glu32.lib;$(SolutionDir)ThirdParty\glfw-3.1.2\lib\Release\glfw3.lib;$(SolutionDir)ThirdParty\glew-1.13.0\lib\Release\GLEW_1130.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
-      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>opengl32.lib;glu32.lib;glfw3.lib;GLEW_1130.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)ThirdParty\glfw-3.1.2\lib\Release;$(SolutionDir)ThirdParty\glew-1.13.0\lib\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
       <ImportLibrary>$(OutDir)$(TargetName).lib</ImportLibrary>
-      <ProgramDataBaseFile>C:/Users/Artem/Documents/Visual Studio 2017/Projects/opengl_2/Release/tutorial01_first_window.pdb</ProgramDataBaseFile>
+      <ProgramDataBaseFile>$(OutDir)$(TargetName).pdb</ProgramDataBaseFile>
       <SubSystem>Console</SubSystem>
       <ModuleDefinitionFile>
       </ModuleDefinitionFile>
@@ -186,7 +148,7 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>$(SolutionDir)ThirdParty\glfw-3.1.2\include\GLFW;$(SolutionDir)ThirdParty\glm-0.9.7.1;$(SolutionDir)ThirdParty\glew-1.13.0\include;%(AdditionalIncludeDirectories);$(ProjectDir)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)ThirdParty\glfw-3.1.2\include\GLFW;$(SolutionDir)ThirdParty\glm-0.9.7.1;$(SolutionDir)ThirdParty\glew-1.13.0\include;%(AdditionalIncludeDirectories);$(ProjectDir);$(ProjectDir)Headers</AdditionalIncludeDirectories>
       <AssemblerListingLocation>RelWithDebInfo/</AssemblerListingLocation>
       <CompileAs>CompileAsCpp</CompileAs>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
@@ -195,45 +157,26 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <Optimization>MaxSpeed</Optimization>
       <PrecompiledHeader>Use</PrecompiledHeader>
-      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>WIN32;_WINDOWS;RENDERLIBRARY_EXPORTS;NDEBUG;TW_STATIC;TW_NO_LIB_PRAGMA;TW_NO_DIRECT3D;GLEW_STATIC;_CRT_SECURE_NO_WARNINGS;CMAKE_INTDIR="RelWithDebInfo";%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ObjectFileName>$(IntDir)</ObjectFileName>
     </ClCompile>
-    <ResourceCompile>
-      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;TW_STATIC;TW_NO_LIB_PRAGMA;TW_NO_DIRECT3D;GLEW_STATIC;_CRT_SECURE_NO_WARNINGS;CMAKE_INTDIR=\"RelWithDebInfo\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>C:\Users\Artem\Downloads\ogl-master\external\AntTweakBar-1.16\include;C:\Users\Artem\Downloads\ogl-master\external\glfw-3.1.2\include\GLFW;C:\Users\Artem\Downloads\ogl-master\external\glm-0.9.7.1;C:\Users\Artem\Downloads\ogl-master\external\glew-1.13.0\include;C:\Users\Artem\Downloads\ogl-master\external\assimp-3.0.1270\include;C:\Users\Artem\Downloads\ogl-master\external\bullet-2.81-rev2613\src;C:\Users\Artem\Downloads\ogl-master\.;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-    </ResourceCompile>
-    <Midl>
-      <AdditionalIncludeDirectories>C:\Users\Artem\Downloads\ogl-master\external\AntTweakBar-1.16\include;C:\Users\Artem\Downloads\ogl-master\external\glfw-3.1.2\include\GLFW;C:\Users\Artem\Downloads\ogl-master\external\glm-0.9.7.1;C:\Users\Artem\Downloads\ogl-master\external\glew-1.13.0\include;C:\Users\Artem\Downloads\ogl-master\external\assimp-3.0.1270\include;C:\Users\Artem\Downloads\ogl-master\external\bullet-2.81-rev2613\src;C:\Users\Artem\Downloads\ogl-master\.;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
-      <HeaderFileName>%(Filename).h</HeaderFileName>
-      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
-      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
-      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
-    </Midl>
     <PostBuildEvent>
       <Message>
       </Message>
-      <Command>setlocal
-"C:\Program Files\CMake\bin\cmake.exe" -E copy "C:/Users/Artem/Documents/Visual Studio 2017/Projects/opengl_2/$(Configuration)/tutorial01_first_window.exe" C:/Users/Artem/Downloads/ogl-master/tutorial01_first_window/
-if %errorlevel% neq 0 goto :cmEnd
-:cmEnd
-endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
-:cmErrorLevel
-exit /b %1
-:cmDone
-if %errorlevel% neq 0 goto :VCEnd</Command>
+      <Command>
+      </Command>
     </PostBuildEvent>
     <Link>
-      <AdditionalDependencies>opengl32.lib;glu32.lib;external\glfw-3.1.2\src\RelWithDebInfo\glfw3.lib;external\RelWithDebInfo\GLEW_1130.lib;opengl32.lib;glu32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
-      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>opengl32.lib;glu32.lib;glfw3.lib;GLEW_1130.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)ThirdParty\glfw-3.1.2\lib\Debug;$(SolutionDir)ThirdParty\glew-1.13.0\lib\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
       <ImportLibrary>$(OutDir)$(TargetName).lib</ImportLibrary>
-      <ProgramDataBaseFile>C:/Users/Artem/Documents/Visual Studio 2017/Projects/opengl_2/RelWithDebInfo/tutorial01_first_window.pdb</ProgramDataBaseFile>
+      <ProgramDataBaseFile>$(OutDir)$(TargetName).pdb</ProgramDataBaseFile>
       <SubSystem>Console</SubSystem>
       <ModuleDefinitionFile>
       </ModuleDefinitionFile>
@@ -260,20 +203,6 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
     <ClCompile Include="Sources\Transform.cpp" />
     <ClCompile Include="Sources\Window.cpp" />
     <ClCompile Include="Sources\VertexArray.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="C:\Users\Artem\Documents\Visual Studio 2017\Projects\opengl_2\ZERO_CHECK.vcxproj">
-      <Project>{812217EB-DF2E-34D7-8593-C132CAEBA049}</Project>
-      <Name>ZERO_CHECK</Name>
-    </ProjectReference>
-    <ProjectReference Include="C:\Users\Artem\Documents\Visual Studio 2017\Projects\opengl_2\external\GLEW_1130.vcxproj">
-      <Project>{1FA742E7-5087-3A8B-A612-03CB7CF79BCB}</Project>
-      <Name>GLEW_1130</Name>
-    </ProjectReference>
-    <ProjectReference Include="C:\Users\Artem\Documents\Visual Studio 2017\Projects\opengl_2\external\glfw-3.1.2\src\glfw.vcxproj">
-      <Project>{80A1923D-E2E2-33A4-82F7-7CDB91E6E3F8}</Project>
-      <Name>glfw</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Headers\Camera.h" />
