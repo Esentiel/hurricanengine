@@ -1,2 +1,2 @@
 # HurricaneEngine
-2d game engine
+3d game engine
