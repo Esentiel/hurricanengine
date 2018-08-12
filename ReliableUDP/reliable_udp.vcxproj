@@ -19,7 +19,7 @@
     <ProjectGuid>{98289F88-68CA-4D4D-B744-B1B7F562045C}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>reliable_udp</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.15063.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.17134.0</WindowsTargetPlatformVersion>
     <ProjectName>ReliableUDP</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -130,25 +130,26 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Headers\CommunicationManager.h" />
+    <ClInclude Include="Headers\EndpointManager.h" />
     <ClInclude Include="Headers\AckRange.h" />
-    <ClInclude Include="Headers\DeliveryNotificationManager.h" />
-    <ClInclude Include="Headers\InFlightPacket.h" />
     <ClInclude Include="Headers\InputMemoryBitStream.h" />
     <ClInclude Include="Headers\MemoryStream.h" />
     <ClInclude Include="Headers\OutputMemoryBitStream.h" />
     <ClInclude Include="Headers\UDP\SocketAddress.h" />
     <ClInclude Include="Headers\UDP\SocketAddressFactory.h" />
     <ClInclude Include="Headers\UDP\SocketUtil.h" />
+    <ClInclude Include="Headers\MessageQueue.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Headers\targetver.h" />
-    <ClInclude Include="Headers\TransmissionData.h" />
     <ClInclude Include="Headers\UDP\UDPSocket.h" />
     <ClInclude Include="Headers\UDP\UDPSocketFactory.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Source\CommunicationManager.cpp" />
+    <ClCompile Include="Source\EndpointManager.cpp" />
+    <ClCompile Include="Source\MessageQueue.cpp" />
     <ClCompile Include="Source\AckRange.cpp" />
-    <ClCompile Include="Source\DeliveryNotificationManager.cpp" />
-    <ClCompile Include="Source\InFlightPacket.cpp" />
     <ClCompile Include="Source\InputMemoryBitStream.cpp" />
     <ClCompile Include="Source\MemoryStream.cpp" />
     <ClCompile Include="Source\OutputMemoryBitStream.cpp" />
@@ -161,7 +162,6 @@
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">stdafx.h</PrecompiledHeaderFile>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">stdafx.h</PrecompiledHeaderFile>
     </ClCompile>
-    <ClCompile Include="Source\TransmissionData.cpp" />
     <ClCompile Include="Source\UDP\SocketAddress.cpp" />
     <ClCompile Include="Source\UDP\SocketAddressFactory.cpp" />
     <ClCompile Include="Source\UDP\UDPSocket.cpp" />

@@ -17,8 +17,8 @@ class UDPSocket
 {
 public:
 	NETWORKLIBRARY_API int Bind(const SocketAddressPtr& toAddress);
-	NETWORKLIBRARY_API int SendTo(const void* data, int len, const SocketAddress& to);
-	NETWORKLIBRARY_API int ReceiveFrom(void* buffer, int len, SocketAddress& from);
+	NETWORKLIBRARY_API int SendTo(const char * data, int len, const SocketAddress& to);
+	NETWORKLIBRARY_API int ReceiveFrom(char * buffer, int len, SocketAddress& from);
 	NETWORKLIBRARY_API int SetNonBlockingMode(bool shouldBeNonBlocking);
 private:
 	friend class UDPSocketFactory;

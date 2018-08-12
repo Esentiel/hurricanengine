@@ -18,6 +18,7 @@ public:
 	NETWORKLIBRARY_API SocketAddress();
 	NETWORKLIBRARY_API SocketAddress(const sockaddr_in&& sockAddr);
 	NETWORKLIBRARY_API int GetSize() const { return sizeof(mSockAddr); }
+	NETWORKLIBRARY_API std::string GetIP() const;
 
 	NETWORKLIBRARY_API SocketAddress& operator=(SocketAddress sockAddr) = delete;
 	sockaddr_in  mSockAddr;
