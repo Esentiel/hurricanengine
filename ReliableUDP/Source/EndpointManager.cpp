@@ -13,8 +13,7 @@ EndpointManager::EndpointManager(UDPSocket* socket, SocketAddress addr) :
 	mNextToSend(1),
 	mLastAckedSeq(0),
 	mBuffer(std::make_unique<std::array<char, MAX_PACKET_SIZE>>()),
-	mBufferSize(0),
-	mHeaderSize(0)
+	mBufferSize(0)
 {
 }
 
@@ -45,7 +44,6 @@ MessageQueue::WritingResult EndpointManager::WriteMsg()
 	bool isSomethingToSend(false);
 	int result(0);
 	MemoryStream * data(nullptr);
-	char * rawData(nullptr);
 	int len(0);
 
 	isSomethingToSend = mMsgQueue->GetNextMessageLen(len);
@@ -55,13 +53,17 @@ MessageQueue::WritingResult EndpointManager::WriteMsg()
 		mMsgQueue->GetnextMessage(mNextToSend, data, len);
 		if (data)
 		{
-			std::copy(rawData, rawData + len, std::begin(*mBuffer) + mBufferSize);
-			mBufferSize += len;
+			const char * rawData = data->GetBufferPtr();
+			if (rawData)
+			{
+				std::copy(rawData, rawData + len, std::begin(*mBuffer) + mBufferSize);
+				mBufferSize += len;
+			}
 		}
 	}
 	else
 	{
-		if (mBufferSize > mHeaderSize)
+		if (mBufferSize > HEADER_SIZE)
 		{
 			result = mSocket->SendTo(mBuffer->data(), mBufferSize, *mRecipient);
 			if (result > 0)
@@ -107,8 +109,7 @@ void EndpointManager::WriteHeader()
 	mBuffer->at(6) = (ackRangeConfirm.GetStart() >> 8) & 0xff;
 	mBuffer->at(7) = ackRangeConfirm.GetCount() & 0xff;
 
-	mBufferSize = 5;
-	mHeaderSize = mBufferSize;
+	mBufferSize = 7;
 }
 
 void EndpointManager::ReadHeader(const std::array<char, MAX_PACKET_SIZE> *buffer)
@@ -147,6 +148,30 @@ void EndpointManager::ReadHeader(const std::array<char, MAX_PACKET_SIZE> *buffer
 	}
 
 	ProcessAcks(ack, ackCnt);
+}
+
+void EndpointManager::PushToQueue(Message msg)
+{
+	mMsgQueue->Enqueue(std::move(msg));
+}
+
+std::vector<InputMemoryBitStream> EndpointManager::ReadData(const std::array<char, MAX_PACKET_SIZE> *buffer)
+{
+	std::vector<InputMemoryBitStream> streams;
+	size_t headIdx = HEADER_SIZE;
+	while (headIdx < buffer->size())
+	{
+		const size_t streamSize = buffer->at(headIdx);
+		char * data = new char[streamSize]; // memory stream owns data
+		memcpy(data, &(buffer->data()[headIdx]), streamSize); // TODO: rewrite this shit
+		InputMemoryBitStream memStream(data, streamSize);
+		streams.push_back(memStream);
+
+		headIdx += streamSize;
+	}
+
+	return streams;
+
 }
 
 void EndpointManager::ResetBuffer()

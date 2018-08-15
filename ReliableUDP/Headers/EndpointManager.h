@@ -4,12 +4,12 @@
 #include "MessageQueue.h"
 #include "UDP/SocketAddress.h"
 #include "AckRange.h"
+#include "InputMemoryBitStream.h"
 
 using PacketSequenceNumber = uint16_t;
 
 class UDPSocket;
 class SocketAddress;
-class Message;
 
 class EndpointManager
 {
@@ -19,6 +19,9 @@ public:
 
 	void SendAll();
 	void ReadHeader(const std::array<char, MAX_PACKET_SIZE> *buffer);
+	void PushToQueue(Message msg);
+	std::vector<InputMemoryBitStream> ReadData(const std::array<char, MAX_PACKET_SIZE> *buffer);
+
 private:
 	MessageQueue::WritingResult WriteMsg();
 	void WriteHeader();
@@ -36,7 +39,6 @@ private:
 	std::unique_ptr<MessageQueue> mMsgQueue;
 	std::unique_ptr<std::array<char, MAX_PACKET_SIZE>> mBuffer;
 	uint8_t mBufferSize;
-	uint8_t mHeaderSize;
 	std::deque<AckRange> mPendingAcks;
 	std::deque<AckRange> mConfirmAcks;
 

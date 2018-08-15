@@ -10,7 +10,7 @@ MessageQueue::MessageQueue() :
 
 void MessageQueue::Enqueue(Message msg)
 {
-	mMessages.push_back(msg);
+	mMessages.push_back(std::move(msg));
 	mMessages.back().mMessageStatus = Message::MessageStatus::eQueued;
 }
 

@@ -140,12 +140,15 @@
     <ClInclude Include="Headers\UDP\SocketAddressFactory.h" />
     <ClInclude Include="Headers\UDP\SocketUtil.h" />
     <ClInclude Include="Headers\MessageQueue.h" />
+    <ClInclude Include="Headers\Message.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Headers\targetver.h" />
     <ClInclude Include="Headers\UDP\UDPSocket.h" />
     <ClInclude Include="Headers\UDP\UDPSocketFactory.h" />
+    <ClInclude Include="Headers\WorkQueue.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Source\Message.cpp" />
     <ClCompile Include="Source\CommunicationManager.cpp" />
     <ClCompile Include="Source\EndpointManager.cpp" />
     <ClCompile Include="Source\MessageQueue.cpp" />

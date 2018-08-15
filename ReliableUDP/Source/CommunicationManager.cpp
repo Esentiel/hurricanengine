@@ -23,6 +23,27 @@ void CommunicationManager::CreateClientEndpoint(SocketAddress &addr)
 	mClients.emplace(id, std::move(mgr));
 }
 
+void CommunicationManager::ProcessUpdatesFromGame()
+{
+	while (!mInputQueue->empty())
+	{
+		Message msg;
+		if (mInputQueue->try_pop(msg))
+		{
+			for (auto it = mClients.begin(); it != mClients.end(); ++it)
+			{
+				it->second->PushToQueue(std::move(msg));
+			}
+		}
+	}
+
+}
+
+void CommunicationManager::ProcessUpdatesFromNetwork()
+{
+
+}
+
 void CommunicationManager::SendUpdates()
 {
 	auto it = mClients.begin();
@@ -47,7 +68,8 @@ void CommunicationManager::ReceiveData()
 		{
 			clientEP->second->ReadHeader(mReceiveBuff.get());
 
-			// TODO: send data to the game
+			std::vector<InputMemoryBitStream> memStreams = clientEP->second->ReadData(mReceiveBuff.get());
+			std::for_each(memStreams.cbegin(), memStreams.cend(), [&](const InputMemoryBitStream &strm) { mOutputQueue->push(std::move(strm)); });
 		}
 		else
 		{
