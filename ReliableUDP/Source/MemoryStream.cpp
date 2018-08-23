@@ -6,4 +6,8 @@ MemoryStream::MemoryStream(char* inBuffer, uint32_t inByteCount) : mBuffer(inBuf
 {
 }
 
+NETWORKLIBRARY_API MemoryStream::~MemoryStream()
+{
+	std::free(mBuffer); // TODO: not safe
+}
 

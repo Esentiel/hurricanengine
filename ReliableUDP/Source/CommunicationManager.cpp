@@ -2,7 +2,8 @@
 #include "CommunicationManager.h"
 
 #include "UDP/SocketUtil.h"
-
+#include "UDP/SocketAddressFactory.h"
+#include "UDP/UDPSocketFactory.h"
 
 CommunicationManager::CommunicationManager() :
 	mReceiveBuff(std::make_unique<std::array<char, MAX_PACKET_SIZE>>()),
@@ -15,10 +16,29 @@ CommunicationManager::~CommunicationManager()
 {
 }
 
-void CommunicationManager::CreateClientEndpoint(SocketAddress &addr)
+int CommunicationManager::InitSocket(const std::string &addrStr)
 {
-	std::string id = addr.GetIP();
-	auto mgr = std::make_unique<EndpointManager>(mSocket.get(), addr);
+	UDPSocketPtr socket = UDPSocketFactory::CreateUDPSocket(SocketAddressFamily::INET);
+	SocketAddressPtr sockAddr = SocketAddressFactory::CreateIPv4FromString(addrStr);
+	auto err = SocketUtil::GetLastError();
+	int result = socket->Bind(sockAddr);
+	
+	if (result >= 0)
+	{
+		socket->SetNonBlockingMode(true);
+
+		mSocket.swap(socket);
+	}
+
+
+	return result;
+}
+
+void CommunicationManager::CreateClientEndpoint(const std::string &addrStr)
+{
+	SocketAddressPtr sockAddr = SocketAddressFactory::CreateIPv4FromString(addrStr);
+	std::string id = sockAddr->GetIP();
+	auto mgr = std::make_unique<EndpointManager>(mSocket.get(), *sockAddr);
 
 	mClients.emplace(id, std::move(mgr));
 }
@@ -74,6 +94,7 @@ void CommunicationManager::ReceiveData()
 		else
 		{
 			// TODO: first time connected
+			mClients.insert({ key , std::make_unique<EndpointManager>(mSocket.get(), addr) });
 		}
 	}
 	else

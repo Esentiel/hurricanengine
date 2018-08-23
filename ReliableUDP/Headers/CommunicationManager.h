@@ -14,7 +14,9 @@ public:
 	CommunicationManager();
 	~CommunicationManager();
 
-	void CreateClientEndpoint(SocketAddress &addr);
+	int InitSocket(const std::string &addrStr);
+
+	void CreateClientEndpoint(const std::string &addrStr);
 
 	void ProcessUpdatesFromGame();
 	void ProcessUpdatesFromNetwork();
@@ -24,8 +26,9 @@ public:
 
 private:
 	void ResetRecvBuffer();
-
+public:
 	std::map<std::string, std::unique_ptr<EndpointManager>> mClients;
+private:
 	std::unique_ptr<UDPSocket> mSocket;
 	std::unique_ptr<std::array<char, MAX_PACKET_SIZE>> mReceiveBuff;
 	uint8_t mReceiveBuffSize;

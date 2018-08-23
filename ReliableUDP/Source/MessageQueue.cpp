@@ -16,29 +16,32 @@ void MessageQueue::Enqueue(Message msg)
 
 void MessageQueue::Ack(uint16_t seq, bool ack)
 {
-	auto msg = mMessages.front();
-
-	if (msg.mSeq != seq)
+	if (mMessages.size())
 	{
-		assert(false);
-	}	
+		auto msg = mMessages.front();
 
-	while (msg.mSeq == seq)
-	{
-		if (ack)
+		if (msg.mSeq != seq)
 		{
-			PopFront();
+			assert(false);
 		}
-		else
+
+		while (msg.mSeq == seq)
 		{
-			if (msg.mReliability == Message::MessageReliability::eReliable)
+			if (ack)
 			{
-				Enqueue(msg);
 				PopFront();
 			}
 			else
 			{
-				PopFront();
+				if (msg.mReliability == Message::MessageReliability::eReliable)
+				{
+					Enqueue(msg);
+					PopFront();
+				}
+				else
+				{
+					PopFront();
+				}
 			}
 		}
 	}

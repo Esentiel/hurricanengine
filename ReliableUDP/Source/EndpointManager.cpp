@@ -12,6 +12,7 @@ EndpointManager::EndpointManager(UDPSocket* socket, SocketAddress addr) :
 	mLastSentSeq(0),
 	mNextToSend(1),
 	mLastAckedSeq(0),
+	mMsgQueue(std::make_unique<MessageQueue>()),
 	mBuffer(std::make_unique<std::array<char, MAX_PACKET_SIZE>>()),
 	mBufferSize(0)
 {
@@ -29,7 +30,7 @@ void EndpointManager::SendAll()
 	do 
 	{
 		result = WriteMsg();
-	} while (result != MessageQueue::WritingResult::eErrorStop && result == MessageQueue::WritingResult::eOKStop);
+	} while (result != MessageQueue::WritingResult::eErrorStop && result != MessageQueue::WritingResult::eOKStop);
 
 	if (result == MessageQueue::WritingResult::eErrorStop)
 	{
@@ -98,18 +99,26 @@ void EndpointManager::WriteHeader()
 	// seq
 	mBuffer->at(0) = mNextToSend & 0xff;
 	mBuffer->at(1) = (mNextToSend >> 8) & 0xff;
-	// acks
-	AckRange ackRangePending = mPendingAcks.front();
-	mBuffer->at(2) = ackRangePending.GetStart() & 0xff;
-	mBuffer->at(3) = (ackRangePending.GetStart() >> 8) & 0xff;
-	mBuffer->at(4) = ackRangePending.GetCount() & 0xff;
-	// confirm acks received
-	AckRange ackRangeConfirm = mConfirmAcks.front();
-	mBuffer->at(5) = ackRangeConfirm.GetStart() & 0xff;
-	mBuffer->at(6) = (ackRangeConfirm.GetStart() >> 8) & 0xff;
-	mBuffer->at(7) = ackRangeConfirm.GetCount() & 0xff;
 
-	mBufferSize = 7;
+	// acks
+	if (mPendingAcks.size())
+	{
+		AckRange ackRangePending = mPendingAcks.front();
+		mBuffer->at(2) = ackRangePending.GetStart() & 0xff;
+		mBuffer->at(3) = (ackRangePending.GetStart() >> 8) & 0xff;
+		mBuffer->at(4) = ackRangePending.GetCount() & 0xff;
+	}
+
+	// confirm acks received
+	if (mConfirmAcks.size())
+	{
+		AckRange ackRangeConfirm = mConfirmAcks.front();
+		mBuffer->at(5) = ackRangeConfirm.GetStart() & 0xff;
+		mBuffer->at(6) = (ackRangeConfirm.GetStart() >> 8) & 0xff;
+		mBuffer->at(7) = ackRangeConfirm.GetCount() & 0xff;
+	}
+
+	mBufferSize = HEADER_SIZE;
 }
 
 void EndpointManager::ReadHeader(const std::array<char, MAX_PACKET_SIZE> *buffer)
@@ -127,24 +136,43 @@ void EndpointManager::ReadHeader(const std::array<char, MAX_PACKET_SIZE> *buffer
 	ackConfirmCnt &= buffer->at(7);
 
 	// send back to let know that we received seq packet
-	AckRange ackRangePending = mPendingAcks.back();
-	if (!ackRangePending.ExtendIfShould(seq))
-		mPendingAcks.emplace_back(AckRange(seq));
-
-	// store received acks to send back confirmation
-	AckRange ackRangeConfirmed = mConfirmAcks.back();
-	if (!ackRangeConfirmed.ExtendIfShould(ack))
-		mConfirmAcks.emplace_back(AckRange(ack, ackCnt));
-
-	// remove from ack queue those which are confirmed
-	AckRange firstAck = mPendingAcks.front();
-	if (firstAck.GetStart() == ackConfirm && firstAck.GetCount() == ackConfirmCnt)
+	if (mPendingAcks.size())
 	{
-		mPendingAcks.pop_front();
+		AckRange ackRangePending = mPendingAcks.back();
+		if (!ackRangePending.ExtendIfShould(seq))
+			mPendingAcks.emplace_back(AckRange(seq));
 	}
 	else
 	{
-		assert(false);
+		mPendingAcks.emplace_back(AckRange(seq));
+	}
+
+	// store received acks to send back confirmation
+	if (mConfirmAcks.size())
+	{
+		AckRange ackRangeConfirmed = mConfirmAcks.back();
+		if (!ackRangeConfirmed.ExtendIfShould(ack))
+			mConfirmAcks.emplace_back(AckRange(ack, ackCnt));
+	}
+	else
+	{
+		mConfirmAcks.emplace_back(AckRange(ack, ackCnt));
+	}
+
+
+	// remove from ack queue those which are confirmed
+	if (mPendingAcks.size())
+	{
+		AckRange firstAck = mPendingAcks.front();
+		if (firstAck.GetStart() == ackConfirm && firstAck.GetCount() == ackConfirmCnt)
+		{
+			mPendingAcks.pop_front();
+		}
+		else
+		{
+			std::cerr << "Wrong pending ack" << std::endl;
+			//assert(false);
+		}
 	}
 
 	ProcessAcks(ack, ackCnt);
@@ -162,12 +190,15 @@ std::vector<InputMemoryBitStream> EndpointManager::ReadData(const std::array<cha
 	while (headIdx < buffer->size())
 	{
 		const size_t streamSize = buffer->at(headIdx);
-		char * data = new char[streamSize]; // memory stream owns data
-		memcpy(data, &(buffer->data()[headIdx]), streamSize); // TODO: rewrite this shit
-		InputMemoryBitStream memStream(data, streamSize);
-		streams.push_back(memStream);
+		if (streamSize)
+		{
+			char * data = (char*)std::malloc(streamSize * sizeof(char)); // memory stream owns data
+			memcpy(data, &(buffer->data()[headIdx]), streamSize); // TODO: rewrite this shit
+			InputMemoryBitStream memStream(data, streamSize);
+			streams.push_back(std::move(memStream));
 
-		headIdx += streamSize;
+			headIdx += streamSize;
+		}
 	}
 
 	return streams;
@@ -202,7 +233,8 @@ void EndpointManager::ProcessAcks(PacketSequenceNumber ack, uint8_t ackCount)
 		}
 		else
 		{
-			assert(false);
+			std::cerr << "WTF processing ack?" << std::endl;
+			//assert(false);
 		}
 			
 	}

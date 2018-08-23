@@ -24,7 +24,7 @@
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v141</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
@@ -148,6 +148,7 @@
     <ClInclude Include="Headers\WorkQueue.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Source.cpp" />
     <ClCompile Include="Source\Message.cpp" />
     <ClCompile Include="Source\CommunicationManager.cpp" />
     <ClCompile Include="Source\EndpointManager.cpp" />

@@ -31,5 +31,8 @@ public:
 	{
 		ReadBits(&inData, inBitCount);
 	}
+
+	InputMemoryBitStream(InputMemoryBitStream&) = delete;
+	InputMemoryBitStream& operator=(InputMemoryBitStream) = delete;
 };
 

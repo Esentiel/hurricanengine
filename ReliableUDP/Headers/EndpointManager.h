@@ -36,7 +36,9 @@ private:
 	PacketSequenceNumber mLastAckedSeq;
 
 	std::map<PacketSequenceNumber, std::vector<Message*>> mSentPackets;
+public:
 	std::unique_ptr<MessageQueue> mMsgQueue;
+private:
 	std::unique_ptr<std::array<char, MAX_PACKET_SIZE>> mBuffer;
 	uint8_t mBufferSize;
 	std::deque<AckRange> mPendingAcks;

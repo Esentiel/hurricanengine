@@ -4,6 +4,10 @@
 
 
 
+UDPSocket::UDPSocket(SOCKET& socket) : mSocket(socket), isBlocking(false)
+{
+}
+
 int UDPSocket::Bind(const SocketAddressPtr& bindAddress)
 {
 	int err = bind(mSocket, (sockaddr *)&bindAddress->mSockAddr, bindAddress->GetSize());
@@ -70,6 +74,11 @@ int UDPSocket::SetNonBlockingMode(bool shouldBeNonBlocking)
 	{
 		return NO_ERROR;
 	}
+}
+
+UDPSocket::~UDPSocket()
+{
+	Close();
 }
 
 void UDPSocket::Close()
