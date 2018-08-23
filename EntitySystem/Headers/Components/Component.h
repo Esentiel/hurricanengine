@@ -18,6 +18,7 @@ public:
 	ComponentID GetComponentID() const;
 	virtual ~Component();
 private:
+	Entity* mEntity;
 	ComponentID mUniqueID;
 	ComponentType mComponentType;
 };

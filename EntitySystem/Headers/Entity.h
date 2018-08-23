@@ -12,6 +12,6 @@ public:
 	const Component* GetComponent(Component::ComponentType componentType);
 private: 
 	bool mIsActive = true;
-	std::unordered_map <Component::ComponentType, Component*> mComponents;
+	std::unordered_map<Component::ComponentType, Component*> mComponents;
 };
 

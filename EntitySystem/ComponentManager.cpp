@@ -25,34 +25,19 @@ Component* ComponentManager::CreateComponent(Component::ComponentType componentT
 	{
 	case Component::ComponentType::eNetworkComponent:
 	{
-		//creating new component 
-		std::unique_ptr<Component> ComponentPointer = std::make_unique<eNetworkComponent>(mNextComponentID);
-		if (ComponentPointer)
-		{
-			ptr = ComponentPointer.get();
-			mComponents.push_back(std::move(ComponentPointer));
-		}
-		break;
+		//creating unique_ptr to Component with appropriate ComponentType and push_back it to the vector
 	}
-	case Component::ComponentType::eRenderingComponent:
+	}
+	if (ptr)
 	{
-		//creating new component 
-		std::unique_ptr<Component> ComponentPointer = std::make_unique<eRenderingComponent>(mNextComponentID);
-		if (ComponentPointer)
-		{
-			ptr = ComponentPointer.get();
-			mComponents.push_back(std::move(ComponentPointer));
-		}
-		break;
+		++mNextComponentID;
 	}
-	}
-	++mNextComponentID;
 	return ptr;
 }
 
 const Component* ComponentManager::GetComponentById(Component::ComponentType componentType, ComponentID componentID)
 {
-	Component* ComponentPtr = nullptr;
+	Component* componentPtr = nullptr;
 	
 	switch (componentType)
 	{
@@ -62,12 +47,12 @@ const Component* ComponentManager::GetComponentById(Component::ComponentType com
 		{
 			if (component->GetComponentID() == componentID)
 			{
-				ComponentPtr = component.get();
+				componentPtr = component.get();
 			}
 		}
 		break;
 	}
 	}
-	return ComponentPtr;
+	return componentPtr;
 	
 }
