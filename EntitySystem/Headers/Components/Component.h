@@ -11,17 +11,13 @@ public:
 	enum class ComponentType
 	{
 		eRenderingComponent = 0,
-		eNetworkComponent,
-		TestComponent
+		eNetworkComponent
 	};
-	Component(ComponentID id) : mUniqueID(id) {};
+	Component(ComponentID id);
 	virtual void UpdateComponent() = 0;
 	ComponentID GetComponentID() const;
-	virtual ~Component() {};
+	virtual ~Component();
 private:
-	// it's unnecessary in this abstract class
 	ComponentID mUniqueID;
-	//Component has a pointer to his owner
-	Entity* mEntity;
 	ComponentType mComponentType;
 };

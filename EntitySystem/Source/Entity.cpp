@@ -9,9 +9,9 @@ Entity::~Entity()
 {
 }
 
-void Entity::AddComponent(Component* component)
+void Entity::AddComponent(Component::ComponentType ComponentType,Component* component)
 {
-	mComponents.push_back(component);
+	mComponents[ComponentType] = component;
 }
 
 bool Entity::IsActive() const
@@ -24,7 +24,16 @@ void Entity::Activate(bool flag)
 	mIsActive = flag;
 }
 
-Component* Entity::GetComponent(Component::ComponentType componentType)
+const Component* Entity::GetComponent(Component::ComponentType componentType)
 {
-	return nullptr;
+	Component* EntityComponentPtr = nullptr;
+	
+	for (std::pair<Component::ComponentType, Component*> component : mComponents)
+	{
+		if (component.first == componentType)
+		{
+			EntityComponentPtr = component.second;
+		}
+	}
+	return EntityComponentPtr;
 }

@@ -1,9 +1,6 @@
 #pragma once
 #include "Components/Component.h"
 
-class ComponentType;
-
-using ComponentID = uint16_t;
 
 class ComponentManager
 {
@@ -12,9 +9,10 @@ public:
 	~ComponentManager();
 	void UpdateComponents();
 	Component* CreateComponent(Component::ComponentType componentType);
-	ComponentID getCounter() { return mLastComponentID; };
+	const ComponentID GetLastComponentID() { return mNextComponentID; };
+	const Component* GetComponentById(Component::ComponentType componentType, ComponentID componentID);
 private:
-	ComponentID mLastComponentID;
-	ComponentType* mComponentType;
+	ComponentID mNextComponentID;
+	//In the future there will be one separate vector for each component in according to ComponentType
 	std::vector<std::unique_ptr<Component>> mComponents;
 };

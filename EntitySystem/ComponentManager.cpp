@@ -1,7 +1,8 @@
 #include "stdafx.h"
 #include "ComponentManager.h"
 
-ComponentManager::ComponentManager() : mLastComponentID(1)
+
+ComponentManager::ComponentManager() : mNextComponentID(1)
 {
 }
 
@@ -20,13 +21,12 @@ void ComponentManager::UpdateComponents()
 Component* ComponentManager::CreateComponent(Component::ComponentType componentType)
 {
 	Component* ptr = nullptr;
-	//switching components as example - shoule be rewrited
 	switch (componentType)
 	{
-	case Component::ComponentType::TestComponent:
-	{	
+	case Component::ComponentType::eNetworkComponent:
+	{
 		//creating new component 
-		std::unique_ptr<Component> ComponentPointer = std::make_unique<TestComponent>(mLastComponentID);
+		std::unique_ptr<Component> ComponentPointer = std::make_unique<eNetworkComponent>(mNextComponentID);
 		if (ComponentPointer)
 		{
 			ptr = ComponentPointer.get();
@@ -34,9 +34,40 @@ Component* ComponentManager::CreateComponent(Component::ComponentType componentT
 		}
 		break;
 	}
-	default:
-		return nullptr;
+	case Component::ComponentType::eRenderingComponent:
+	{
+		//creating new component 
+		std::unique_ptr<Component> ComponentPointer = std::make_unique<eRenderingComponent>(mNextComponentID);
+		if (ComponentPointer)
+		{
+			ptr = ComponentPointer.get();
+			mComponents.push_back(std::move(ComponentPointer));
+		}
+		break;
 	}
-	++mLastComponentID;
+	}
+	++mNextComponentID;
 	return ptr;
+}
+
+const Component* ComponentManager::GetComponentById(Component::ComponentType componentType, ComponentID componentID)
+{
+	Component* ComponentPtr = nullptr;
+	
+	switch (componentType)
+	{
+	case Component::ComponentType::eNetworkComponent:
+	{
+		for (std::unique_ptr<Component> &component : mComponents) 
+		{
+			if (component->GetComponentID() == componentID)
+			{
+				ComponentPtr = component.get();
+			}
+		}
+		break;
+	}
+	}
+	return ComponentPtr;
+	
 }
