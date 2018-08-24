@@ -84,13 +84,13 @@ public:
 	std::shared_ptr<T> wait_and_pop();
 	void wait_and_pop(T &val);
 
-	void push(T val);
+	void push(T &&val);
 	bool empty();
 };
 
 
 template<typename T>
-void threadsafe_queue_lb_impr<T>::push(T val)
+void threadsafe_queue_lb_impr<T>::push(T &&val)
 {
 	std::shared_ptr<T> data(std::make_shared<T>(std::move(val)));
 	std::unique_ptr<node> p(std::make_unique<node>(node()));

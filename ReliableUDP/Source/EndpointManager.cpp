@@ -189,7 +189,7 @@ std::vector<InputMemoryBitStream> EndpointManager::ReadData(const std::array<cha
 	size_t headIdx = HEADER_SIZE;
 	while (headIdx < buffer->size())
 	{
-		const size_t streamSize = buffer->at(headIdx);
+		const int streamSize = buffer->at(headIdx);
 		if (streamSize)
 		{
 			char * data = (char*)std::malloc(streamSize * sizeof(char)); // memory stream owns data

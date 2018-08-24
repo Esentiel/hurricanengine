@@ -32,6 +32,9 @@ public:
 		ReadBits(&inData, inBitCount);
 	}
 
+	InputMemoryBitStream(InputMemoryBitStream&& rhs);
+	InputMemoryBitStream& operator=(InputMemoryBitStream &&rhs);
+
 	InputMemoryBitStream(InputMemoryBitStream&) = delete;
 	InputMemoryBitStream& operator=(InputMemoryBitStream) = delete;
 };

@@ -16,8 +16,11 @@ public:
 
 	NETWORKLIBRARY_API virtual ~MemoryStream();
 
+	MemoryStream(MemoryStream&& rhs);
+	MemoryStream& operator=(MemoryStream &&rhs);
+
 	MemoryStream(MemoryStream&) = delete;
-	MemoryStream& operator=(MemoryStream) = delete;
+	MemoryStream& operator=(MemoryStream&) = delete;
 protected:
 	char* mBuffer;
 	uint32_t mHead;

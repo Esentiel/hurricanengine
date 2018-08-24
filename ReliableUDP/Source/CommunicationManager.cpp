@@ -89,7 +89,7 @@ void CommunicationManager::ReceiveData()
 			clientEP->second->ReadHeader(mReceiveBuff.get());
 
 			std::vector<InputMemoryBitStream> memStreams = clientEP->second->ReadData(mReceiveBuff.get());
-			std::for_each(memStreams.cbegin(), memStreams.cend(), [&](const InputMemoryBitStream &strm) { mOutputQueue->push(std::move(strm)); });
+			std::for_each(memStreams.begin(), memStreams.end(), [&](InputMemoryBitStream &strm) { mOutputQueue->push(std::move(strm)); });
 		}
 		else
 		{
