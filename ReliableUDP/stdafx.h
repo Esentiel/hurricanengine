@@ -28,7 +28,7 @@
 #include <tchar.h>
 #include <assert.h>
 
-#define MAX_PACKET_SIZE 128 //size in bytes w/o headers
+#define MAX_PACKET_SIZE 1280 //size in bytes w/o headers
 #define MAX_SEND_ATTEMPTS 100
 #define HEADER_SIZE 7 // bytes
 

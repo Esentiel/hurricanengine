@@ -5,8 +5,10 @@
 #include "EndpointManager.h"
 #include "WorkQueue.h"
 
-using MsgQueuePtr = std::unique_ptr<threadsafe_queue_lb_impr<Message>>;
-using MemStreamQueuePtr = std::unique_ptr<threadsafe_queue_lb_impr<InputMemoryBitStream>>;
+using MsgQueue = threadsafe_queue_lb_impr<Message>;
+using MsgQueuePtr = std::unique_ptr<MsgQueue>;
+using MemStreamQueue = threadsafe_queue_lb_impr<InputMemoryBitStream>;
+using MemStreamQueuePtr = std::unique_ptr<MemStreamQueue>;
 
 class CommunicationManager
 {

@@ -25,7 +25,7 @@ public:
 private:
 	MessageQueue::WritingResult WriteMsg();
 	void WriteHeader();
-	void ResetBuffer();
+	void ResetBufferSize();
 	void ProcessAcks(PacketSequenceNumber ack, uint8_t ackCount);
 
 	UDPSocket* mSocket;

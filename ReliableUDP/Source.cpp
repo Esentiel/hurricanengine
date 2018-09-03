@@ -30,6 +30,9 @@ int main(int argc, char *argv[])
 		{
 			commMgr.ReceiveData();
 			commMgr.SendUpdates();
+
+			using namespace std::chrono_literals;
+			std::this_thread::sleep_for(2s);
 		}
 	}
 	else

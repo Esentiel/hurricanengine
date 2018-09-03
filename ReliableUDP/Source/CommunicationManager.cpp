@@ -7,7 +7,9 @@
 
 CommunicationManager::CommunicationManager() :
 	mReceiveBuff(std::make_unique<std::array<char, MAX_PACKET_SIZE>>()),
-	mReceiveBuffSize(0)
+	mReceiveBuffSize(0),
+	mInputQueue(std::make_unique<MsgQueue>()),
+	mOutputQueue(std::make_unique<MemStreamQueue>())
 {
 }
 
@@ -86,20 +88,25 @@ void CommunicationManager::ReceiveData()
 		auto clientEP = mClients.find(key);
 		if (clientEP != mClients.end())
 		{
+			std::cout << "Received bytes from client: " << key << std::endl;
 			clientEP->second->ReadHeader(mReceiveBuff.get());
 
 			std::vector<InputMemoryBitStream> memStreams = clientEP->second->ReadData(mReceiveBuff.get());
-			std::for_each(memStreams.begin(), memStreams.end(), [&](InputMemoryBitStream &strm) { mOutputQueue->push(std::move(strm)); });
+			for (auto & memStream : memStreams)
+			{
+				mOutputQueue->push(std::move(memStream));
+			}
 		}
 		else
 		{
 			// TODO: first time connected
+			std::cout << "New client added: " << key << std::endl;
 			mClients.insert({ key , std::make_unique<EndpointManager>(mSocket.get(), addr) });
 		}
 	}
 	else
 	{
-		SocketUtil::ReportError(L"SendAll() failed to send packet!");
+		//SocketUtil::ReportError(L"ReceiveData() failed to send packet!");
 		SocketUtil::GetLastError();
 	}
 }

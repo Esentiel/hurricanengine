@@ -24,7 +24,7 @@ EndpointManager::~EndpointManager()
 
 void EndpointManager::SendAll()
 {	
-	ResetBuffer();
+	ResetBufferSize();
 
 	MessageQueue::WritingResult result;
 	do 
@@ -49,9 +49,9 @@ MessageQueue::WritingResult EndpointManager::WriteMsg()
 
 	isSomethingToSend = mMsgQueue->GetNextMessageLen(len);
 
-	if (isSomethingToSend && (mBufferSize + len < MAX_PACKET_SIZE))
+	if (isSomethingToSend && ((mBufferSize + len < MAX_PACKET_SIZE) || mBufferSize == HEADER_SIZE))
 	{
-		mMsgQueue->GetnextMessage(mNextToSend, data, len);
+		mMsgQueue->GetnextMessage(mNextToSend, &data, len);
 		if (data)
 		{
 			const char * rawData = data->GetBufferPtr();
@@ -66,12 +66,14 @@ MessageQueue::WritingResult EndpointManager::WriteMsg()
 	{
 		if (mBufferSize > HEADER_SIZE)
 		{
+			WriteHeader();
 			result = mSocket->SendTo(mBuffer->data(), mBufferSize, *mRecipient);
+			std::cout << "SendPacket: seq=" << mNextToSend << ", sent byteCnt=" << result << std::endl;
 			if (result > 0)
 			{
 				mLastSentSeq++;
 				mNextToSend = mLastSentSeq + 1;
-				ResetBuffer();
+				ResetBufferSize();
 			}
 			else
 			{
@@ -100,6 +102,8 @@ void EndpointManager::WriteHeader()
 	mBuffer->at(0) = mNextToSend & 0xff;
 	mBuffer->at(1) = (mNextToSend >> 8) & 0xff;
 
+	std::cout << "Write header: mNextToSend:" << mNextToSend << std::endl;
+
 	// acks
 	if (mPendingAcks.size())
 	{
@@ -107,6 +111,8 @@ void EndpointManager::WriteHeader()
 		mBuffer->at(2) = ackRangePending.GetStart() & 0xff;
 		mBuffer->at(3) = (ackRangePending.GetStart() >> 8) & 0xff;
 		mBuffer->at(4) = ackRangePending.GetCount() & 0xff;
+
+		std::cout << "Write header: ackRangePending.GetStart():" << ackRangePending.GetStart() << ", ackRangePending.GetCount():" << ackRangePending.GetCount() << std::endl;
 	}
 
 	// confirm acks received
@@ -116,9 +122,12 @@ void EndpointManager::WriteHeader()
 		mBuffer->at(5) = ackRangeConfirm.GetStart() & 0xff;
 		mBuffer->at(6) = (ackRangeConfirm.GetStart() >> 8) & 0xff;
 		mBuffer->at(7) = ackRangeConfirm.GetCount() & 0xff;
+
+		std::cout << "Write header: ackRangeConfirm.GetStart():" << ackRangeConfirm.GetStart() << ", ackRangeConfirm.GetCount():" << ackRangeConfirm.GetCount() << std::endl;
 	}
 
-	mBufferSize = HEADER_SIZE;
+
+	//mBufferSize = HEADER_SIZE;
 }
 
 void EndpointManager::ReadHeader(const std::array<char, MAX_PACKET_SIZE> *buffer)
@@ -129,11 +138,13 @@ void EndpointManager::ReadHeader(const std::array<char, MAX_PACKET_SIZE> *buffer
 	uint8_t ackCnt;
 	uint8_t ackConfirmCnt;
 
-	seq &= buffer->at(0) | (buffer->at(1) << 4);
-	ack &= buffer->at(2) | (buffer->at(3) << 4);
-	ackCnt &= buffer->at(4);
-	ackConfirm &= buffer->at(5) | (buffer->at(3) << 6);
-	ackConfirmCnt &= buffer->at(7);
+	seq = buffer->at(0) | (buffer->at(1) << 4);
+	ack = buffer->at(2) | (buffer->at(3) << 4);
+	ackCnt = buffer->at(4);
+	ackConfirm = buffer->at(5) | (buffer->at(3) << 6);
+	ackConfirmCnt = buffer->at(7);
+
+	std::cout << "Read header: seq:" << seq << ", ack:" << ack << ", ackCnt:" << ackCnt << ", ackConfirm:" << ackConfirm << ", ackConfirmCnt:" << ackConfirmCnt << std::endl;
 
 	// send back to let know that we received seq packet
 	if (mPendingAcks.size())
@@ -190,7 +201,7 @@ std::vector<InputMemoryBitStream> EndpointManager::ReadData(const std::array<cha
 	while (headIdx < buffer->size())
 	{
 		const int streamSize = buffer->at(headIdx);
-		if (streamSize)
+		if (streamSize > 0)
 		{
 			char * data = (char*)std::malloc(streamSize * sizeof(char)); // memory stream owns data
 			memcpy(data, &(buffer->data()[headIdx]), streamSize); // TODO: rewrite this shit
@@ -199,20 +210,19 @@ std::vector<InputMemoryBitStream> EndpointManager::ReadData(const std::array<cha
 
 			headIdx += streamSize;
 		}
+		else
+		{
+			break;
+		}
 	}
 
 	return streams;
 
 }
 
-void EndpointManager::ResetBuffer()
+void EndpointManager::ResetBufferSize()
 {
-	//clear array
-	// std::fill(std::begin(*mBuffer), std::end(*mBuffer), 0); TODO: seems not needed
-
-	//fill header
-	WriteHeader();
-
+	mBufferSize = HEADER_SIZE;
 }
 
 void EndpointManager::ProcessAcks(PacketSequenceNumber ack, uint8_t ackCount)

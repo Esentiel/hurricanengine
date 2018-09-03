@@ -21,7 +21,7 @@ std::string SocketAddress::GetIP() const
 
 	if (!mSockAddr.sin_addr.s_addr == INADDR_ANY)
 	{
-		if (!inet_ntop(mSockAddr.sin_family, &mSockAddr.sin_addr, buff, 256))
+		if (inet_ntop(mSockAddr.sin_family, &mSockAddr.sin_addr, buff, 256))
 			ip = std::string(buff);
 			
 	}

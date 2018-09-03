@@ -47,13 +47,13 @@ void MessageQueue::Ack(uint16_t seq, bool ack)
 	}
 }
 
-void MessageQueue::GetnextMessage(PacketSequenceNumber seq, MemoryStream *data, int &len)
+void MessageQueue::GetnextMessage(PacketSequenceNumber seq, MemoryStream **data, int &len)
 {
 	if (mLastSent + 1 >= mMessages.size())
 		return;
 
 	auto msg = mMessages.at(mLastSent + 1);
-	data = msg.mData;
+	*data = msg.mData;
 	len = msg.mSize;
 
 	msg.mSeq = seq;

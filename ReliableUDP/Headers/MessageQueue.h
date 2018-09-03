@@ -18,7 +18,7 @@ public:
 	MessageQueue();
 	
 	void Ack(uint16_t seq, bool ack);
-	void GetnextMessage(PacketSequenceNumber seq, MemoryStream *data, int &len);
+	void GetnextMessage(PacketSequenceNumber seq, MemoryStream **data, int &len);
 	bool GetNextMessageLen(int &len) const;
 	void Enqueue(Message msg);
 

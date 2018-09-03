@@ -9,5 +9,5 @@ Message::Message()
 
 Message::~Message()
 {
-	delete mData;
+	//delete mData;
 }
