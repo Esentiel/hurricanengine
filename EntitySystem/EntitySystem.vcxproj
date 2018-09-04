@@ -105,10 +105,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="ComponentManager.cpp" />
+    <ClCompile Include="Sources\ComponentManager.cpp" />
     <ClCompile Include="Source.cpp" />
-    <ClCompile Include="Source\Components\Component.cpp" />
-    <ClCompile Include="Source\Entity.cpp" />
+    <ClCompile Include="Sources\Components\Component.cpp" />
+    <ClCompile Include="Sources\Entity.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">Create</PrecompiledHeader>
@@ -116,7 +116,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ComponentManager.h" />
+    <ClInclude Include="Headers\ComponentManager.h" />
     <ClInclude Include="Headers\Components\Component.h" />
     <ClInclude Include="Headers\Entity.h" />
     <ClInclude Include="stdafx.h" />
