@@ -9,7 +9,7 @@ AckRange::AckRange() : mStart(0), mCount(0)
 
 AckRange::AckRange(PacketSequenceNumber start) : 
 	mStart(start), 
-	mCount(0)
+	mCount(1)
 {
 }
 
@@ -43,7 +43,7 @@ PacketSequenceNumber AckRange::GetStart() const
 	return mStart;
 }
 
-PacketSequenceNumber AckRange::GetCount() const
+uint8_t AckRange::GetCount() const
 {
 	return mCount;
 }

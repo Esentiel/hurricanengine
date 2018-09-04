@@ -25,7 +25,7 @@ SocketAddressPtr SocketAddressFactory::CreateIPv4FromString(const std::string& s
 	if (portInt <= USHRT_MAX)
 		portShort = static_cast<u_short>(portInt);
 	else
-		std::cerr << "ASSERT";
+		std::cout << "ASSERT";
 
 	ULONG srcAddr;
 	sockaddr_in sockAddr;

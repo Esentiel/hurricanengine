@@ -20,13 +20,9 @@ void MessageQueue::Ack(uint16_t seq, bool ack)
 	{
 		auto msg = mMessages.front();
 
-		if (msg.mSeq != seq)
+		if (msg.mSeq == seq)
 		{
-			assert(false);
-		}
-
-		while (msg.mSeq == seq)
-		{
+			std::cout << "Ack: seq=" << seq << ", ack=" << ack << std::endl;
 			if (ack)
 			{
 				PopFront();
@@ -44,6 +40,11 @@ void MessageQueue::Ack(uint16_t seq, bool ack)
 				}
 			}
 		}
+		else
+		{
+			//std::cerr << "MessageQueue::Ack << wut?" << std::endl;
+			//assert(false);
+		}
 	}
 }
 
@@ -52,7 +53,7 @@ void MessageQueue::GetnextMessage(PacketSequenceNumber seq, MemoryStream **data,
 	if (mLastSent + 1 >= mMessages.size())
 		return;
 
-	auto msg = mMessages.at(mLastSent + 1);
+	Message &msg = mMessages.at(mLastSent);
 	*data = msg.mData;
 	len = msg.mSize;
 

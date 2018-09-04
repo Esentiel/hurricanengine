@@ -5,6 +5,7 @@
 #include "UDP/SocketUtil.h"
 #include "MemoryStream.h"
 
+#include <sstream> //TODO
 
 EndpointManager::EndpointManager(UDPSocket* socket, SocketAddress addr) :
 	mSocket(socket),
@@ -68,7 +69,7 @@ MessageQueue::WritingResult EndpointManager::WriteMsg()
 		{
 			WriteHeader();
 			result = mSocket->SendTo(mBuffer->data(), mBufferSize, *mRecipient);
-			std::cout << "SendPacket: seq=" << mNextToSend << ", sent byteCnt=" << result << std::endl;
+			//std::cout << "SendPacket: seq=" << mNextToSend << ", sent byteCnt=" << result << std::endl;
 			if (result > 0)
 			{
 				mLastSentSeq++;
@@ -102,7 +103,8 @@ void EndpointManager::WriteHeader()
 	mBuffer->at(0) = mNextToSend & 0xff;
 	mBuffer->at(1) = (mNextToSend >> 8) & 0xff;
 
-	std::cout << "Write header: mNextToSend:" << mNextToSend << std::endl;
+	std::stringstream log;
+	log << "[OUTGOING] Write header: seq:" << mNextToSend;
 
 	// acks
 	if (mPendingAcks.size())
@@ -112,7 +114,15 @@ void EndpointManager::WriteHeader()
 		mBuffer->at(3) = (ackRangePending.GetStart() >> 8) & 0xff;
 		mBuffer->at(4) = ackRangePending.GetCount() & 0xff;
 
-		std::cout << "Write header: ackRangePending.GetStart():" << ackRangePending.GetStart() << ", ackRangePending.GetCount():" << ackRangePending.GetCount() << std::endl;
+		log << ", ack:" << ackRangePending.GetStart() << ", ackCNT:" << ackRangePending.GetCount();
+	}
+	else
+	{
+		mBuffer->at(2) = 0;
+		mBuffer->at(3) = 0;
+		mBuffer->at(4) = 0;
+
+		log << ", ack:" << 0 << ", ackCNT:" << 0;
 	}
 
 	// confirm acks received
@@ -123,10 +133,18 @@ void EndpointManager::WriteHeader()
 		mBuffer->at(6) = (ackRangeConfirm.GetStart() >> 8) & 0xff;
 		mBuffer->at(7) = ackRangeConfirm.GetCount() & 0xff;
 
-		std::cout << "Write header: ackRangeConfirm.GetStart():" << ackRangeConfirm.GetStart() << ", ackRangeConfirm.GetCount():" << ackRangeConfirm.GetCount() << std::endl;
+		log << ", ackCNFR:" << ackRangeConfirm.GetStart() << ", ackCNFR_CNT:" << ackRangeConfirm.GetCount();
+	}
+	else
+	{
+		mBuffer->at(5) = 0;
+		mBuffer->at(6) = 0;
+		mBuffer->at(7) = 0;
+
+		log << ", ackCNFR:" << 0 << ", ackCNFR_CNT:" << 0;
 	}
 
-
+	std::cout << log.str() << std::endl;
 	//mBufferSize = HEADER_SIZE;
 }
 
@@ -141,52 +159,46 @@ void EndpointManager::ReadHeader(const std::array<char, MAX_PACKET_SIZE> *buffer
 	seq = buffer->at(0) | (buffer->at(1) << 4);
 	ack = buffer->at(2) | (buffer->at(3) << 4);
 	ackCnt = buffer->at(4);
-	ackConfirm = buffer->at(5) | (buffer->at(3) << 6);
+	ackConfirm = buffer->at(5) | (buffer->at(6) << 4);
 	ackConfirmCnt = buffer->at(7);
 
-	std::cout << "Read header: seq:" << seq << ", ack:" << ack << ", ackCnt:" << ackCnt << ", ackConfirm:" << ackConfirm << ", ackConfirmCnt:" << ackConfirmCnt << std::endl;
+
+	std::cout << "[INCOMING] Read header: seq:" << seq << ", ack:" << ack << ", ackCnt:" << (int)ackCnt << ", ackConfirm:" << ackConfirm << ", ackConfirmCnt:" << (int)ackConfirmCnt << std::endl;
 
 	// send back to let know that we received seq packet
-	if (mPendingAcks.size())
+	if (seq)
 	{
-		AckRange ackRangePending = mPendingAcks.back();
-		if (!ackRangePending.ExtendIfShould(seq))
-			mPendingAcks.emplace_back(AckRange(seq));
-	}
-	else
-	{
-		mPendingAcks.emplace_back(AckRange(seq));
-	}
-
-	// store received acks to send back confirmation
-	if (mConfirmAcks.size())
-	{
-		AckRange ackRangeConfirmed = mConfirmAcks.back();
-		if (!ackRangeConfirmed.ExtendIfShould(ack))
-			mConfirmAcks.emplace_back(AckRange(ack, ackCnt));
-	}
-	else
-	{
-		mConfirmAcks.emplace_back(AckRange(ack, ackCnt));
-	}
-
-
-	// remove from ack queue those which are confirmed
-	if (mPendingAcks.size())
-	{
-		AckRange firstAck = mPendingAcks.front();
-		if (firstAck.GetStart() == ackConfirm && firstAck.GetCount() == ackConfirmCnt)
+		if (mPendingAcks.size())
 		{
-			mPendingAcks.pop_front();
+			AckRange &ackRangePending = mPendingAcks.back();
+			if (!ackRangePending.ExtendIfShould(seq))
+				mPendingAcks.emplace_back(AckRange(seq));
 		}
 		else
 		{
-			std::cerr << "Wrong pending ack" << std::endl;
-			//assert(false);
+			mPendingAcks.emplace_back(AckRange(seq));
 		}
 	}
 
-	ProcessAcks(ack, ackCnt);
+	// store received acks to send back confirmation
+	if (ack)
+	{
+		if (mConfirmAcks.size())
+		{
+			AckRange &ackRangeConfirmed = mConfirmAcks.back();
+			if (!ackRangeConfirmed.ExtendIfShould(ack))
+				mConfirmAcks.emplace_back(AckRange(ack, ackCnt));
+		}
+		else
+		{
+			mConfirmAcks.emplace_back(AckRange(ack, ackCnt));
+		}
+	}
+
+
+
+
+	ProcessAcks(ack, ackCnt, ackConfirm, ackConfirmCnt);
 }
 
 void EndpointManager::PushToQueue(Message msg)
@@ -225,27 +237,45 @@ void EndpointManager::ResetBufferSize()
 	mBufferSize = HEADER_SIZE;
 }
 
-void EndpointManager::ProcessAcks(PacketSequenceNumber ack, uint8_t ackCount)
+void EndpointManager::ProcessAcks(PacketSequenceNumber ack, uint8_t ackCount, PacketSequenceNumber ackConfirm, uint8_t ackConfirmCnt)
 {
 	PacketSequenceNumber last = ack + ackCount;
 
-	for (PacketSequenceNumber currAckSeq = mLastAckedSeq; currAckSeq < last; currAckSeq++)
+	if (last)
 	{
-		if (mLastAckedSeq + 1 < currAckSeq)
+		for (PacketSequenceNumber currAckSeq = mLastAckedSeq; currAckSeq <= last; currAckSeq++)
 		{
-			mMsgQueue->Ack(currAckSeq, false);
-			mLastAckedSeq++;
+			if (mLastAckedSeq + 1 < currAckSeq)
+			{
+				mMsgQueue->Ack(currAckSeq, false);
+				mLastAckedSeq++;
+			}
+			else if (mLastAckedSeq + 1 == currAckSeq)
+			{
+				mMsgQueue->Ack(currAckSeq, true);
+				mLastAckedSeq++;
+			}
+			else
+			{
+				//std::cerr << "WTF processing ack?" << std::endl;
+				//assert(false);
+			}
 		}
-		else if (mLastAckedSeq + 1 == currAckSeq)
+	}
+	
+
+	// remove from ack queue those which are confirmed
+	if (mPendingAcks.size())
+	{
+		AckRange firstAck = mPendingAcks.front();
+		if (firstAck.GetStart() == ackConfirm && firstAck.GetCount() == ackConfirmCnt)
 		{
-			mMsgQueue->Ack(currAckSeq, true);
-			mLastAckedSeq++;
+			mPendingAcks.pop_front();
 		}
 		else
 		{
-			std::cerr << "WTF processing ack?" << std::endl;
+			//std::cerr << "Wrong pending ack" << std::endl;
 			//assert(false);
 		}
-			
 	}
 }

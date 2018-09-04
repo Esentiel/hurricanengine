@@ -86,9 +86,17 @@ void CommunicationManager::ReceiveData()
 	{
 		std::string key = SocketAddress(addr).GetIP();
 		auto clientEP = mClients.find(key);
+		if (clientEP == mClients.end())
+		{
+			// TODO: first time connected
+			//std::cout << "New client added: " << key << std::endl;
+			mClients.insert({ key , std::make_unique<EndpointManager>(mSocket.get(), addr) });
+		}
+		
+		clientEP = mClients.find(key);
 		if (clientEP != mClients.end())
 		{
-			std::cout << "Received bytes from client: " << key << std::endl;
+			//std::cout << "Received bytes from client: " << key << std::endl;
 			clientEP->second->ReadHeader(mReceiveBuff.get());
 
 			std::vector<InputMemoryBitStream> memStreams = clientEP->second->ReadData(mReceiveBuff.get());
@@ -96,12 +104,6 @@ void CommunicationManager::ReceiveData()
 			{
 				mOutputQueue->push(std::move(memStream));
 			}
-		}
-		else
-		{
-			// TODO: first time connected
-			std::cout << "New client added: " << key << std::endl;
-			mClients.insert({ key , std::make_unique<EndpointManager>(mSocket.get(), addr) });
 		}
 	}
 	else

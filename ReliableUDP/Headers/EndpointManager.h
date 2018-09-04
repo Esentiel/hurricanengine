@@ -26,7 +26,7 @@ private:
 	MessageQueue::WritingResult WriteMsg();
 	void WriteHeader();
 	void ResetBufferSize();
-	void ProcessAcks(PacketSequenceNumber ack, uint8_t ackCount);
+	void ProcessAcks(PacketSequenceNumber ack, uint8_t ackCount, PacketSequenceNumber ackConfirm, uint8_t ackConfirmCnt);
 
 	UDPSocket* mSocket;
 	std::unique_ptr<SocketAddress> mRecipient;
