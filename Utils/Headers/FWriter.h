@@ -1,4 +1,5 @@
 #pragma once
+
 #include "stdafx.h"
 
 class FWriter
@@ -11,6 +12,6 @@ private:
 	void Flush();
 	std::fstream mFile;
 	std::unique_ptr<std::ostringstream> mBuffer;
-	std::chrono::time_point<std::chrono::system_clock> mFlushTime = std::chrono::system_clock::now();
-	double mPeriod = 5.0;
+	std::chrono::time_point<std::chrono::system_clock> mFlushTime;
+	const double mPeriod;
 };

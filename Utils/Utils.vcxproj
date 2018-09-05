@@ -15,15 +15,15 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="GameUtils.h" />
     <ClInclude Include="Headers\FWriter.h" />
+    <ClInclude Include="Headers\GameUtils.h" />
     <ClInclude Include="Headers\Logger.h" />
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="GameUtils.cpp" />
     <ClCompile Include="Source.cpp" />
     <ClCompile Include="Sources\FWriter.cpp" />
+    <ClCompile Include="Sources\GameUtils.cpp" />
     <ClCompile Include="Sources\Logger.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

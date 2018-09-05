@@ -24,7 +24,7 @@
     <ClInclude Include="stdafx.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="GameUtils.h">
+    <ClInclude Include="Headers\GameUtils.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -41,7 +41,7 @@
     <ClCompile Include="Sources\Logger.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GameUtils.cpp">
+    <ClCompile Include="Sources\GameUtils.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

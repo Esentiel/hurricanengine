@@ -3,25 +3,21 @@
 
 Logger::Logger(const std::string& path)
 {
-	this->mMessage = new FWriter(path);
+	mPointerToFile = std::make_unique<FWriter>(path);
 }
 
-void Logger::CalculateLogLevel(LogLevel loglevel, std::ostringstream& line, tm& current_t, std::chrono::duration<double, std::milli>& milliseconds, const std::string& str)
+std::string Logger::GetLogLevelString(LogLevel loglevel)
 {
 	switch (loglevel)
 	{
 	case LogLevel::eError:
-		line << std::put_time(&current_t, "[%Y-%m-%d %H:%M:%S") << '.' << std::setfill('0') << std::setw(3) << milliseconds.count() << "] [Error] " << str;
-		break;
+		return "] [Error] ";
 	case LogLevel::eWarning:
-		line << std::put_time(&current_t, "[%Y-%m-%d %H:%M:%S") << '.' << std::setfill('0') << std::setw(3) << milliseconds.count() << "] [Warning] " << str;
-		break;
+		return "] [Warning] ";
 	case LogLevel::eInfo:
-		line << std::put_time(&current_t, "[%Y-%m-%d %H:%M:%S") << '.' << std::setfill('0') << std::setw(3) << milliseconds.count() << "] [Info] " << str;
-		break;
+		return "] [Info] ";
 	case LogLevel::eDebug:
-		line << std::put_time(&current_t, "[%Y-%m-%d %H:%M:%S") << '.' << std::setfill('0') << std::setw(3) << milliseconds.count() << "] [Debug] " << str;
-		break;
+		return "] [Debug] ";
 	}
 }
 
@@ -36,13 +32,13 @@ void Logger::Log(LogLevel loglevel, const std::string& str)
 	struct tm current_t;
 	if (localtime_s(&current_t, &timer) == 0)
 	{
-		CalculateLogLevel(loglevel, line, current_t, milliseconds, str);
+		std::string enumtostring = GetLogLevelString(loglevel);
+		line << std::put_time(&current_t, "[%Y-%m-%d %H:%M:%S") << '.' << std::setfill('0') << std::setw(3) << milliseconds.count() << enumtostring << str;
 	}
-	mMessage->PushToBuffer(line.str());
+	mPointerToFile->PushToBuffer(line.str());
 	line.str("");
 };
 
 Logger::~Logger()
 {
-	delete this->mMessage;
 }

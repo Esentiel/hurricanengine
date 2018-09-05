@@ -1,8 +1,10 @@
 #include "stdafx.h"
+#include "Constants.h"
 #include "FWriter.h"
 
 FWriter::FWriter(const std::string& filepath)
-{	
+	: mPeriod(FLUSHINTERVAL), mFlushTime{ std::chrono::system_clock::now() }
+{
 	mBuffer = std::make_unique<std::ostringstream>();
 	mFile.open(filepath.c_str(), std::fstream::out);
 	if (!mFile.is_open())
@@ -25,7 +27,7 @@ void FWriter::Flush()
 		std::chrono::duration<double> elapsed_seconds = timeNow - mFlushTime;
 		if (elapsed_seconds.count() >= mPeriod)
 		{
-			mFile << mBuffer->str() << std::endl;
+			mFile << mBuffer->str();
 			mBuffer->str("");
 			mFlushTime = timeNow;
 		}
