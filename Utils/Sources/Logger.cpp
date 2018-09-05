@@ -8,18 +8,21 @@ Logger::Logger(const std::string& path)
 
 std::string Logger::GetLogLevelString(LogLevel loglevel)
 {
+	std::string level("");
 	switch (loglevel)
 	{
 	case LogLevel::eError:
-		return "Error";
+		level = "Error";
+		return level;
 	case LogLevel::eWarning:
-		return "Warning";
+		level = "Warning";
+		return level;
 	case LogLevel::eInfo:
-		return "Info";
+		level = "Info";
+		return level;
 	case LogLevel::eDebug:
-		return "Debug";
-	default:
-		break;
+		level = "Debug";
+		return level;
 	}
 }
 
