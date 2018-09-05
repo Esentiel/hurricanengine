@@ -17,7 +17,7 @@ public:
 	void Log(LogLevel loglevel, const std::string& str);
 	~Logger();
 private:
-	std::unique_ptr<FWriter> mPointerToFile;
+	std::unique_ptr<FWriter> mFileWriter;
 };
 
 

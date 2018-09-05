@@ -3,7 +3,7 @@
 
 Logger::Logger(const std::string& path)
 {
-	mPointerToFile = std::make_unique<FWriter>(path);
+	mFileWriter = std::make_unique<FWriter>(path);
 }
 
 std::string Logger::GetLogLevelString(LogLevel loglevel)
@@ -11,13 +11,15 @@ std::string Logger::GetLogLevelString(LogLevel loglevel)
 	switch (loglevel)
 	{
 	case LogLevel::eError:
-		return "] [Error] ";
+		return "Error";
 	case LogLevel::eWarning:
-		return "] [Warning] ";
+		return "Warning";
 	case LogLevel::eInfo:
-		return "] [Info] ";
+		return "Info";
 	case LogLevel::eDebug:
-		return "] [Debug] ";
+		return "Debug";
+	default:
+		break;
 	}
 }
 
@@ -33,9 +35,9 @@ void Logger::Log(LogLevel loglevel, const std::string& str)
 	if (localtime_s(&current_t, &timer) == 0)
 	{
 		std::string enumtostring = GetLogLevelString(loglevel);
-		line << std::put_time(&current_t, "[%Y-%m-%d %H:%M:%S") << '.' << std::setfill('0') << std::setw(3) << milliseconds.count() << enumtostring << str;
+		line << std::put_time(&current_t, "[%Y-%m-%d %H:%M:%S") << '.' << std::setfill('0') << std::setw(3) << milliseconds.count() << "] [" << enumtostring << "] " << str;
 	}
-	mPointerToFile->PushToBuffer(line.str());
+	mFileWriter->PushToBuffer(line.str());
 	line.str("");
 };
 

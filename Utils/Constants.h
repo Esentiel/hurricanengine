@@ -1,3 +1,3 @@
 #pragma once
 
-#define FLUSHINTERVAL 5.0
+#define FLUSHINTERVAL 5.0f

@@ -13,5 +13,5 @@ private:
 	std::fstream mFile;
 	std::unique_ptr<std::ostringstream> mBuffer;
 	std::chrono::time_point<std::chrono::system_clock> mFlushTime;
-	const double mPeriod;
+	const float mPeriod;
 };

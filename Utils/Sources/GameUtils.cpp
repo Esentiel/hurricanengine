@@ -9,7 +9,14 @@ GameUtils::GameUtils()
 
 Logger* GameUtils::GetLogger()
 {
-	return mLogger.get();
+	if (mLogger)
+	{
+		return mLogger.get();
+	}
+	else
+	{
+		std::cout << "mLogger is nullptr" << std::endl;
+	}
 }
 
 void GameUtils::InitLoger(const std::string& path)
