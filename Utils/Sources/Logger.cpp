@@ -12,36 +12,36 @@ std::string Logger::GetLogLevelString(LogLevel loglevel)
 	switch (loglevel)
 	{
 	case LogLevel::eError:
-		level = "Error";
-		return level;
+		level = "ERROR";
 	case LogLevel::eWarning:
-		level = "Warning";
-		return level;
+		level = "WARNING";
 	case LogLevel::eInfo:
-		level = "Info";
-		return level;
+		level = "INFO";
 	case LogLevel::eDebug:
-		level = "Debug";
-		return level;
+		level = "DEBUG";
 	}
+
+	return level;
 }
 
-void Logger::Log(LogLevel loglevel, const std::string& str)
+void Logger::Log_(LogLevel loglevel, const std::string& str)
 {
-	std::ostringstream line;
+	std::ostringstream logLine;
 
-	std::chrono::time_point<std::chrono::system_clock> now = std::chrono::system_clock::now();
-	std::chrono::duration<double, std::milli> milliseconds = std::chrono::duration_cast<std::chrono::milliseconds>(now.time_since_epoch()) % 1000;
+	std::chrono::time_point<std::chrono::system_clock> timeNow = std::chrono::system_clock::now();
+	std::chrono::duration<double, std::milli> milliseconds = std::chrono::duration_cast<std::chrono::milliseconds>(timeNow.time_since_epoch()) % 1000;
 
-	time_t timer = time(nullptr);
+	time_t currentTime = time(nullptr);
 	struct tm current_t;
-	if (localtime_s(&current_t, &timer) == 0)
+	
+	if (localtime_s(&current_t, &currentTime) == 0)
 	{
 		std::string enumtostring = GetLogLevelString(loglevel);
-		line << std::put_time(&current_t, "[%Y-%m-%d %H:%M:%S") << '.' << std::setfill('0') << std::setw(3) << milliseconds.count() << "] [" << enumtostring << "] " << str;
+		logLine << std::put_time(&current_t, "[%Y-%m-%d %H:%M:%S") << '.' << std::setfill('0') << std::setw(3) << milliseconds.count() << "] [" << enumtostring << "] " << str;
 	}
-	mFileWriter->PushToBuffer(line.str());
-	line.str("");
+	
+	mFileWriter->PushToBuffer(logLine.str());
+	logLine.str("");
 };
 
 Logger::~Logger()

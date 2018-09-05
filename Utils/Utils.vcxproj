@@ -15,6 +15,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Headers\Constants.h" />
     <ClInclude Include="Headers\FWriter.h" />
     <ClInclude Include="Headers\GameUtils.h" />
     <ClInclude Include="Headers\Logger.h" />
