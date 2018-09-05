@@ -14,7 +14,26 @@ private:
 	static std::unique_ptr<Logger> mLogger;
 };
 
-#define HurLogWarning(str) GameUtils::GetLogger()->Log(Logger::LogLevel::eWarning, str)
-#define HurLogError(str) GameUtils::GetLogger()->Log(Logger::LogLevel::eError, str)
-#define HurLogDebug(str) GameUtils::GetLogger()->Log(Logger::LogLevel::eDebug, str)
-#define HurLogInfo(str) GameUtils::GetLogger()->Log(Logger::LogLevel::eInfo, str)
+#define LogError(str, ...) \
+do {  \
+	if (Logger* logger = GameUtils::GetLogger()) \
+	logger->Log(Logger::LogLevel::eError, str, ##__VA_ARGS__); \
+} while(0)
+
+#define LogWarning(str, ...) \
+do {  \
+	if (Logger* logger = GameUtils::GetLogger()) \
+	logger->Log(Logger::LogLevel::eWarning, str, ##__VA_ARGS__); \
+} while(0)
+
+#define LogInfo(str, ...) \
+do {  \
+	if (Logger* logger = GameUtils::GetLogger()) \
+	logger->Log(Logger::LogLevel::eInfo, str, ##__VA_ARGS__); \
+} while(0)
+
+#define LogDebug(str, ...) \
+do {  \
+	if (Logger* logger = GameUtils::GetLogger()) \
+	logger->Log(Logger::LogLevel::eDebug, str, ##__VA_ARGS__); \
+} while(0)

@@ -7,10 +7,6 @@ FWriter::FWriter(const std::string& filepath)
 {
 	mBuffer = std::make_unique<std::ostringstream>();
 	mFile.open(filepath.c_str(), std::fstream::out);
-	if (!mFile.is_open())
-	{
-		std::cout << "file is not open" << std::endl;
-	}
 }
 
 void FWriter::PushToBuffer(const std::string& str)
@@ -32,7 +28,6 @@ void FWriter::Flush()
 			mFlushTime = timeNow;
 		}
 	}
-	else std::cout << "file is not open" << std::endl;
 }
 
 FWriter::~FWriter()
