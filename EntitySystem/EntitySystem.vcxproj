@@ -109,7 +109,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Sources\ComponentManager.cpp" />
-    <ClCompile Include="Source.cpp" />
     <ClCompile Include="Sources\Components\Component.cpp" />
     <ClCompile Include="Sources\Entity.cpp" />
     <ClCompile Include="stdafx.cpp">
