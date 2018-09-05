@@ -13,43 +13,47 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ReliableUDP", "ReliableUDP\
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "RenderLib", "RenderLib\RenderLib.vcxproj", "{014FBBB7-BDF6-34B5-AE9B-9375BBA53A1B}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "EntitySystem", "EntitySystem\EntitySystem.vcxproj", "{2A13BE99-E7B7-4B2C-93C2-09F2542437F1}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Utils", "Utils\Utils.vcxproj", "{F00EC453-5F3F-48D8-B457-524028FB445B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
-		Debug|x86 = Debug|x86
 		Release|x64 = Release|x64
-		Release|x86 = Release|x86
 		RelWithDebInfo|x64 = RelWithDebInfo|x64
-		RelWithDebInfo|x86 = RelWithDebInfo|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{AE2725B7-4B12-47AA-989E-C96E66F28E6E}.Debug|x64.ActiveCfg = Debug|x64
 		{AE2725B7-4B12-47AA-989E-C96E66F28E6E}.Debug|x64.Build.0 = Debug|x64
-		{AE2725B7-4B12-47AA-989E-C96E66F28E6E}.Debug|x86.ActiveCfg = Debug|x64
 		{AE2725B7-4B12-47AA-989E-C96E66F28E6E}.Release|x64.ActiveCfg = Release|x64
 		{AE2725B7-4B12-47AA-989E-C96E66F28E6E}.Release|x64.Build.0 = Release|x64
-		{AE2725B7-4B12-47AA-989E-C96E66F28E6E}.Release|x86.ActiveCfg = Release|x64
 		{AE2725B7-4B12-47AA-989E-C96E66F28E6E}.RelWithDebInfo|x64.ActiveCfg = RelWithDebInfo|x64
 		{AE2725B7-4B12-47AA-989E-C96E66F28E6E}.RelWithDebInfo|x64.Build.0 = RelWithDebInfo|x64
-		{AE2725B7-4B12-47AA-989E-C96E66F28E6E}.RelWithDebInfo|x86.ActiveCfg = RelWithDebInfo|x64
 		{98289F88-68CA-4D4D-B744-B1B7F562045C}.Debug|x64.ActiveCfg = Debug|x64
 		{98289F88-68CA-4D4D-B744-B1B7F562045C}.Debug|x64.Build.0 = Debug|x64
-		{98289F88-68CA-4D4D-B744-B1B7F562045C}.Debug|x86.ActiveCfg = Debug|x64
 		{98289F88-68CA-4D4D-B744-B1B7F562045C}.Release|x64.ActiveCfg = Release|x64
 		{98289F88-68CA-4D4D-B744-B1B7F562045C}.Release|x64.Build.0 = Release|x64
-		{98289F88-68CA-4D4D-B744-B1B7F562045C}.Release|x86.ActiveCfg = Release|x64
 		{98289F88-68CA-4D4D-B744-B1B7F562045C}.RelWithDebInfo|x64.ActiveCfg = RelWithDebInfo|x64
 		{98289F88-68CA-4D4D-B744-B1B7F562045C}.RelWithDebInfo|x64.Build.0 = RelWithDebInfo|x64
-		{98289F88-68CA-4D4D-B744-B1B7F562045C}.RelWithDebInfo|x86.ActiveCfg = RelWithDebInfo|x64
 		{014FBBB7-BDF6-34B5-AE9B-9375BBA53A1B}.Debug|x64.ActiveCfg = Debug|x64
 		{014FBBB7-BDF6-34B5-AE9B-9375BBA53A1B}.Debug|x64.Build.0 = Debug|x64
-		{014FBBB7-BDF6-34B5-AE9B-9375BBA53A1B}.Debug|x86.ActiveCfg = Debug|x64
 		{014FBBB7-BDF6-34B5-AE9B-9375BBA53A1B}.Release|x64.ActiveCfg = Release|x64
 		{014FBBB7-BDF6-34B5-AE9B-9375BBA53A1B}.Release|x64.Build.0 = Release|x64
-		{014FBBB7-BDF6-34B5-AE9B-9375BBA53A1B}.Release|x86.ActiveCfg = Release|x64
 		{014FBBB7-BDF6-34B5-AE9B-9375BBA53A1B}.RelWithDebInfo|x64.ActiveCfg = RelWithDebInfo|x64
 		{014FBBB7-BDF6-34B5-AE9B-9375BBA53A1B}.RelWithDebInfo|x64.Build.0 = RelWithDebInfo|x64
-		{014FBBB7-BDF6-34B5-AE9B-9375BBA53A1B}.RelWithDebInfo|x86.ActiveCfg = RelWithDebInfo|x64
+		{2A13BE99-E7B7-4B2C-93C2-09F2542437F1}.Debug|x64.ActiveCfg = Debug|x64
+		{2A13BE99-E7B7-4B2C-93C2-09F2542437F1}.Debug|x64.Build.0 = Debug|x64
+		{2A13BE99-E7B7-4B2C-93C2-09F2542437F1}.Release|x64.ActiveCfg = Release|x64
+		{2A13BE99-E7B7-4B2C-93C2-09F2542437F1}.Release|x64.Build.0 = Release|x64
+		{2A13BE99-E7B7-4B2C-93C2-09F2542437F1}.RelWithDebInfo|x64.ActiveCfg = RelWithDebInfo|x64
+		{2A13BE99-E7B7-4B2C-93C2-09F2542437F1}.RelWithDebInfo|x64.Build.0 = RelWithDebInfo|x64
+		{F00EC453-5F3F-48D8-B457-524028FB445B}.Debug|x64.ActiveCfg = Debug|x64
+		{F00EC453-5F3F-48D8-B457-524028FB445B}.Debug|x64.Build.0 = Debug|x64
+		{F00EC453-5F3F-48D8-B457-524028FB445B}.Release|x64.ActiveCfg = Release|x64
+		{F00EC453-5F3F-48D8-B457-524028FB445B}.Release|x64.Build.0 = Release|x64
+		{F00EC453-5F3F-48D8-B457-524028FB445B}.RelWithDebInfo|x64.ActiveCfg = RelWithDebInfo|x64
+		{F00EC453-5F3F-48D8-B457-524028FB445B}.RelWithDebInfo|x64.Build.0 = RelWithDebInfo|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
