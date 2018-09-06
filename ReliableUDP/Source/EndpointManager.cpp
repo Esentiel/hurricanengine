@@ -105,7 +105,7 @@ void EndpointManager::WriteHeader()
 
 	std::stringstream log;
 	log << "[OUTGOING] Write header: seq:" << mNextToSend;
-
+	LogDebug("[OUTGOING] Write header: seq: %d", mNextToSend);
 	// acks
 	if (mPendingAcks.size())
 	{

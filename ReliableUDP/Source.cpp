@@ -5,6 +5,8 @@
 
 int main(int argc, char *argv[])
 {
+	GameUtils::InitLoger();
+
 	//  For optimization.
 
 	WORD wVersionRequested;

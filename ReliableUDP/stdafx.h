@@ -24,9 +24,13 @@
 #include <cstdint>
 #include "targetver.h"
 
+#include <fstream>
+
 #include <stdio.h>
 #include <tchar.h>
 #include <assert.h>
+
+#include "GameUtils.h"
 
 #define MAX_PACKET_SIZE 1280 //size in bytes w/o headers
 #define MAX_SEND_ATTEMPTS 100
