@@ -81,9 +81,9 @@ void CommunicationManager::ReceiveData()
 	SocketAddress addr;
 	ResetRecvBuffer();
 
-	result = mSocket->ReceiveFrom(mReceiveBuff->data(), MAX_PACKET_SIZE, addr);
-	if (result > 0)
+	while (mSocket->ReceiveFrom(mReceiveBuff->data(), MAX_PACKET_SIZE, addr) > 0)
 	{
+		std::cout << "Received" << std::endl;
 		std::string key = SocketAddress(addr).GetIP();
 		auto clientEP = mClients.find(key);
 		if (clientEP == mClients.end())
@@ -106,7 +106,8 @@ void CommunicationManager::ReceiveData()
 			}
 		}
 	}
-	else
+
+	if (!result)
 	{
 		//SocketUtil::ReportError(L"ReceiveData() failed to send packet!");
 		SocketUtil::GetLastError();

@@ -14,8 +14,11 @@ public:
 	~AckRange();
 
 	bool ExtendIfShould(PacketSequenceNumber inSequenceNumber);
+	bool ExtendIfShould(PacketSequenceNumber inSequenceNumber, uint8_t count);
+	void Reduce(uint8_t count);
 	PacketSequenceNumber GetStart() const;
 	uint8_t GetCount() const;
+	PacketSequenceNumber GetEnd() const;
 private:
 	uint8_t mCount;
 	PacketSequenceNumber mStart;

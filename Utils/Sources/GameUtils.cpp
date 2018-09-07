@@ -13,9 +13,11 @@ Logger* GameUtils::GetLogger()
 	return mLogger.get();
 }
 
-void GameUtils::InitLoger()
+void GameUtils::InitLoger(const std::string& name)
 {
-	mLogger = std::make_unique<Logger>(LOGPATH);
+	std::string path(LOGPATH);
+	path.append(name);
+	mLogger = std::make_unique<Logger>(path);
 }
 
 

@@ -70,6 +70,7 @@ MessageQueue::WritingResult EndpointManager::WriteMsg()
 			WriteHeader();
 			result = mSocket->SendTo(mBuffer->data(), mBufferSize, *mRecipient);
 			//std::cout << "SendPacket: seq=" << mNextToSend << ", sent byteCnt=" << result << std::endl;
+			std::cout << "Sent" << std::endl;
 			if (result > 0)
 			{
 				mLastSentSeq++;
@@ -105,7 +106,7 @@ void EndpointManager::WriteHeader()
 
 	std::stringstream log;
 	log << "[OUTGOING] Write header: seq:" << mNextToSend;
-	LogDebug("[OUTGOING] Write header: seq: %d", mNextToSend);
+	//LogDebug("[OUTGOING] Write header: seq: %d", mNextToSend);
 	// acks
 	if (mPendingAcks.size())
 	{
@@ -114,7 +115,7 @@ void EndpointManager::WriteHeader()
 		mBuffer->at(3) = (ackRangePending.GetStart() >> 8) & 0xff;
 		mBuffer->at(4) = ackRangePending.GetCount() & 0xff;
 
-		log << ", ack:" << ackRangePending.GetStart() << ", ackCNT:" << ackRangePending.GetCount();
+		log << ", ack:" << (int)ackRangePending.GetStart() << ", ackCnt:" << (int)ackRangePending.GetCount();
 	}
 	else
 	{
@@ -122,18 +123,18 @@ void EndpointManager::WriteHeader()
 		mBuffer->at(3) = 0;
 		mBuffer->at(4) = 0;
 
-		log << ", ack:" << 0 << ", ackCNT:" << 0;
+		log << ", ack:" << 0 << ", ackCnt:" << 0;
 	}
 
 	// confirm acks received
 	if (mConfirmAcks.size())
 	{
-		AckRange ackRangeConfirm = mConfirmAcks.front();
+		const AckRange &ackRangeConfirm = mConfirmAcks.front();
 		mBuffer->at(5) = ackRangeConfirm.GetStart() & 0xff;
 		mBuffer->at(6) = (ackRangeConfirm.GetStart() >> 8) & 0xff;
 		mBuffer->at(7) = ackRangeConfirm.GetCount() & 0xff;
 
-		log << ", ackCNFR:" << ackRangeConfirm.GetStart() << ", ackCNFR_CNT:" << ackRangeConfirm.GetCount();
+		log << ", ackConfirm:" << (int)ackRangeConfirm.GetStart() << ", ackConfirmCnt:" << (int)ackRangeConfirm.GetCount();
 	}
 	else
 	{
@@ -141,10 +142,11 @@ void EndpointManager::WriteHeader()
 		mBuffer->at(6) = 0;
 		mBuffer->at(7) = 0;
 
-		log << ", ackCNFR:" << 0 << ", ackCNFR_CNT:" << 0;
+		log << ", ackConfirm:" << 0 << ", ackConfirmCnt:" << 0;
 	}
 
 	std::cout << log.str() << std::endl;
+	LogDebug(log.str());
 	//mBufferSize = HEADER_SIZE;
 }
 
@@ -162,9 +164,10 @@ void EndpointManager::ReadHeader(const std::array<char, MAX_PACKET_SIZE> *buffer
 	ackConfirm = buffer->at(5) | (buffer->at(6) << 4);
 	ackConfirmCnt = buffer->at(7);
 
-
-	std::cout << "[INCOMING] Read header: seq:" << seq << ", ack:" << ack << ", ackCnt:" << (int)ackCnt << ", ackConfirm:" << ackConfirm << ", ackConfirmCnt:" << (int)ackConfirmCnt << std::endl;
-
+	 std::stringstream ss;
+	 ss << "[INCOMING] Read header: seq:" << seq << ", ack:" << ack << ", ackCnt:" << (int)ackCnt << ", ackConfirm:" << ackConfirm << ", ackConfirmCnt:" << (int)ackConfirmCnt << std::endl;
+	 std::cout << ss.str() << std::endl;
+	 LogDebug(ss.str());
 	// send back to let know that we received seq packet
 	if (seq)
 	{
@@ -181,19 +184,19 @@ void EndpointManager::ReadHeader(const std::array<char, MAX_PACKET_SIZE> *buffer
 	}
 
 	// store received acks to send back confirmation
-	if (ack)
-	{
-		if (mConfirmAcks.size())
-		{
-			AckRange &ackRangeConfirmed = mConfirmAcks.back();
-			if (!ackRangeConfirmed.ExtendIfShould(ack))
-				mConfirmAcks.emplace_back(AckRange(ack, ackCnt));
-		}
-		else
-		{
-			mConfirmAcks.emplace_back(AckRange(ack, ackCnt));
-		}
-	}
+	//if (ack)
+	//{
+	//	if (mConfirmAcks.size())
+	//	{
+	//		AckRange &ackRangeConfirmed = mConfirmAcks.back();
+	//		if (!ackRangeConfirmed.ExtendIfShould(ack))
+	//			mConfirmAcks.emplace_back(AckRange(ack, ackCnt));
+	//	}
+	//	else
+	//	{
+	//		mConfirmAcks.emplace_back(AckRange(ack, ackCnt));
+	//	}
+	//}
 
 
 
@@ -262,20 +265,95 @@ void EndpointManager::ProcessAcks(PacketSequenceNumber ack, uint8_t ackCount, Pa
 			}
 		}
 	}
+
+	// add pending acks
+	if (ack)
+	{
+		//bool isAdded = false;
+		if (mConfirmAcks.size())
+		{
+			//isAdded = true;
+			AckRange &ackRangeConfirmedBack = mConfirmAcks.back();
+			if (!ackRangeConfirmedBack.ExtendIfShould(ack, ackCount))
+				mConfirmAcks.emplace_back(AckRange(ack, ackCount));
+
+		}
+		else
+		{
+			mConfirmAcks.emplace_back(AckRange(ack, ackCount));
+		}
+
+		std::string logLine;
+		for (auto &el : mConfirmAcks)
+		{
+			logLine.append("[add confirm acks] mConfirmAcks: start: " + std::to_string(el.GetStart()) + ", count: " + std::to_string(el.GetCount()));
+			LogDebug(logLine);
+			logLine.clear();
+		}
+
+		/*if (isAdded)
+		{
+			AckRange &ackRangeConfirmed = mConfirmAcks.front();
+			if (ack != ackRangeConfirmed.GetStart())
+			{
+				if (ack < ackRangeConfirmed.GetEnd())
+					ackRangeConfirmed.Reduce(ack - 1);
+				else if (ack == ackRangeConfirmed.GetEnd())
+					mConfirmAcks.pop_front();
+			}
+		}*/
+	}
+
+
+
+	// remove already confirmed acks
+	if (ack && mConfirmAcks.size())
+	{
+		AckRange &ackRangeConfirmed = mConfirmAcks.front();
+		if (ackRangeConfirmed.GetStart() < ack && ackRangeConfirmed.GetEnd() <= ack)
+		{
+			ackRangeConfirmed.Reduce(ack - ackRangeConfirmed.GetStart());
+		}
+		//else if (ackRangeConfirmed.GetStart() == ack)
+		//{
+		//	mConfirmAcks.pop_back();
+		//}
+
+		std::string logLine;
+		for (auto &el : mConfirmAcks)
+		{
+			logLine.append("[remove already confirmed acks] mConfirmAcks: start: " + std::to_string(el.GetStart()) + ", count: " + std::to_string(el.GetCount()));
+			LogDebug(logLine);
+			logLine.clear();
+		}
+	}
+
 	
 
 	// remove from ack queue those which are confirmed
-	if (mPendingAcks.size())
+	if (mPendingAcks.size() && ackConfirm)
 	{
-		AckRange firstAck = mPendingAcks.front();
+		AckRange &firstAck = mPendingAcks.front();
 		if (firstAck.GetStart() == ackConfirm && firstAck.GetCount() == ackConfirmCnt)
 		{
 			mPendingAcks.pop_front();
 		}
+		else if (firstAck.GetStart() == ackConfirm)
+		{
+			firstAck.Reduce(ackConfirmCnt);
+		}
 		else
 		{
-			//std::cerr << "Wrong pending ack" << std::endl;
+			std::cerr << "Wrong pending ack" << std::endl;
 			//assert(false);
+		}
+
+		std::string logLine;
+		for (auto &el : mPendingAcks)
+		{
+			logLine.append("[remove from pend ack] mPendingAcks: start: " + std::to_string(el.GetStart()) + ", count: " + std::to_string(el.GetCount()));
+			LogDebug(logLine);
+			logLine.clear();
 		}
 	}
 }

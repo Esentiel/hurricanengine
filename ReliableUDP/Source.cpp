@@ -5,7 +5,7 @@
 
 int main(int argc, char *argv[])
 {
-	GameUtils::InitLoger();
+	
 
 	//  For optimization.
 
@@ -20,6 +20,7 @@ int main(int argc, char *argv[])
 	bool isServer = false;
 	if (argc > 1)
 	{
+		GameUtils::InitLoger("server.log");
 		isServer = true;
 	}
 	CommunicationManager commMgr;
@@ -61,11 +62,12 @@ int main(int argc, char *argv[])
 
 
 			using namespace std::chrono_literals;
-			std::this_thread::sleep_for(5s);
+			std::this_thread::sleep_for(2s);
 		}
 	}
 	else
 	{
+		GameUtils::InitLoger("client.log");
 		commMgr.InitSocket("127.0.0.1:55000");
 		commMgr.CreateClientEndpoint("127.0.0.1:50000");
 
@@ -106,7 +108,7 @@ int main(int argc, char *argv[])
 			
 
 			using namespace std::chrono_literals;
-			std::this_thread::sleep_for(5s);
+			std::this_thread::sleep_for(2s);
 		}
 
 

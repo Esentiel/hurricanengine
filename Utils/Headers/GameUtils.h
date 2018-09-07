@@ -14,7 +14,7 @@ class GameUtils
 public:
 	GameUtils();
 	static UTILITYLIBRARY_API Logger* GetLogger();
-	static UTILITYLIBRARY_API void InitLoger();
+	static UTILITYLIBRARY_API void InitLoger(const std::string& name);
 	~GameUtils();
 private: 
 	static std::unique_ptr<Logger> mLogger;
