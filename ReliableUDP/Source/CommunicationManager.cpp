@@ -83,20 +83,18 @@ void CommunicationManager::ReceiveData()
 
 	while (mSocket->ReceiveFrom(mReceiveBuff->data(), MAX_PACKET_SIZE, addr) > 0)
 	{
-		std::cout << "Received" << std::endl;
+		
 		std::string key = SocketAddress(addr).GetIP();
+		LogInfo("Received %s", key.c_str());
 		auto clientEP = mClients.find(key);
 		if (clientEP == mClients.end())
 		{
-			// TODO: first time connected
-			//std::cout << "New client added: " << key << std::endl;
 			mClients.insert({ key , std::make_unique<EndpointManager>(mSocket.get(), addr) });
 		}
 		
 		clientEP = mClients.find(key);
 		if (clientEP != mClients.end())
 		{
-			//std::cout << "Received bytes from client: " << key << std::endl;
 			clientEP->second->ReadHeader(mReceiveBuff.get());
 
 			std::vector<InputMemoryBitStream> memStreams = clientEP->second->ReadData(mReceiveBuff.get());
@@ -107,10 +105,10 @@ void CommunicationManager::ReceiveData()
 		}
 	}
 
-	if (!result)
+	if (result < 0)
 	{
-		//SocketUtil::ReportError(L"ReceiveData() failed to send packet!");
-		SocketUtil::GetLastError();
+		auto err = SocketUtil::GetLastError();
+		LogError("Recv error=%d", err);
 	}
 }
 

@@ -20,13 +20,13 @@ int main(int argc, char *argv[])
 	bool isServer = false;
 	if (argc > 1)
 	{
-		GameUtils::InitLoger("server.log");
+		
 		isServer = true;
 	}
 	CommunicationManager commMgr;
 	if (isServer)
 	{
-		
+		GameUtils::InitLoger("server.log");
 		commMgr.InitSocket("127.0.0.1:50000");
 
 		while (true)
@@ -68,6 +68,7 @@ int main(int argc, char *argv[])
 	else
 	{
 		GameUtils::InitLoger("client.log");
+
 		commMgr.InitSocket("127.0.0.1:55000");
 		commMgr.CreateClientEndpoint("127.0.0.1:50000");
 

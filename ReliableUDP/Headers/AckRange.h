@@ -17,8 +17,9 @@ public:
 	bool ExtendIfShould(PacketSequenceNumber inSequenceNumber, uint8_t count);
 	void Reduce(uint8_t count);
 	PacketSequenceNumber GetStart() const;
-	uint8_t GetCount() const;
 	PacketSequenceNumber GetEnd() const;
+	uint8_t GetCount() const;
+	PacketSequenceNumber GetNext() const;
 private:
 	uint8_t mCount;
 	PacketSequenceNumber mStart;

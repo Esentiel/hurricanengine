@@ -13,12 +13,16 @@ std::string Logger::GetLogLevelString(LogLevel loglevel)
 	{
 	case LogLevel::eError:
 		level = "ERROR";
+		break;
 	case LogLevel::eWarning:
 		level = "WARNING";
+		break;
 	case LogLevel::eInfo:
 		level = "INFO";
+		break;
 	case LogLevel::eDebug:
 		level = "DEBUG";
+		break;
 	}
 
 	return level;

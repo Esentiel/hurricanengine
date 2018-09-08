@@ -29,7 +29,9 @@ bool AckRange::ExtendIfShould(PacketSequenceNumber inSequenceNumber)
 {
 	if (inSequenceNumber == mStart + mCount)
 	{
+		
 		++mCount;
+		//LogDebug("ExtendIfShould: seq=%d, count=%d", inSequenceNumber, mCount);
 		return true;
 	}
 	else
@@ -42,7 +44,7 @@ bool AckRange::ExtendIfShould(PacketSequenceNumber inSequenceNumber, uint8_t cou
 {
 	if (inSequenceNumber == mStart + mCount)
 	{
-		++mCount;
+		mCount += count;
 		return true;
 	}
 	else if (mStart == inSequenceNumber)
@@ -70,12 +72,17 @@ PacketSequenceNumber AckRange::GetStart() const
 	return mStart;
 }
 
+PacketSequenceNumber AckRange::GetEnd() const
+{
+	return mStart + mCount - 1;
+}
+
 uint8_t AckRange::GetCount() const
 {
 	return mCount;
 }
 
-PacketSequenceNumber AckRange::GetEnd() const
+PacketSequenceNumber AckRange::GetNext() const
 {
-	return mStart + mCount - 1;
+	return mStart + mCount;
 }
