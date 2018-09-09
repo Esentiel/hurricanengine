@@ -36,8 +36,8 @@ int main(int argc, char *argv[])
 			{
 				uint16_t iid = 128;
 				char * data = new char[8];
-				data[0] = 8;
-				data[1] = iid & 0xff;
+				data[0] = 8; // size  in 8 bits
+				data[1] = iid & 0xff; //netId in 16 bits
 				data[2] = (iid >> 8) & 0xff;
 				data[3] = 'E';
 				data[4] = 'L';
