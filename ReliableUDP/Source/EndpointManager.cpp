@@ -69,10 +69,9 @@ MessageQueue::WritingResult EndpointManager::WriteMsg()
 		{
 			WriteHeader();
 			result = mSocket->SendTo(mBuffer->data(), mBufferSize, *mRecipient);
-			//std::cout << "SendPacket: seq=" << mNextToSend << ", sent byteCnt=" << result << std::endl;
-			std::cout << "Sent" << std::endl;
 			if (result > 0)
 			{
+				LogInfo("packet sent: seq=%d", mNextToSend);
 				mLastSentSeq++;
 				mNextToSend = mLastSentSeq + 1;
 				ResetBufferSize();
@@ -106,7 +105,7 @@ void EndpointManager::WriteHeader()
 
 	std::stringstream log;
 	log << "[OUTGOING] Write header: seq:" << mNextToSend;
-	//LogDebug("[OUTGOING] Write header: seq: %d", mNextToSend);
+
 	// acks
 	if (mPendingAcks.size())
 	{
@@ -147,7 +146,6 @@ void EndpointManager::WriteHeader()
 
 	std::cout << log.str() << std::endl;
 	LogDebug(log.str());
-	//mBufferSize = HEADER_SIZE;
 }
 
 void EndpointManager::ReadHeader(const std::array<char, MAX_PACKET_SIZE> *buffer)
@@ -273,14 +271,14 @@ void EndpointManager::ProcessAcks(PacketSequenceNumber ack, uint8_t ackCount, Pa
 	if (ack && mConfirmAcks.size())
 	{
 		AckRange &ackRangeConfirmed = mConfirmAcks.front();
-		if (ackRangeConfirmed.GetStart() < ack && ackRangeConfirmed.GetNext() <= ack + ackCount)
+		if (ackRangeConfirmed.GetStart() < ack && ackRangeConfirmed.GetNext() == ack + ackCount)
 		{
 			ackRangeConfirmed.Reduce(ack - ackRangeConfirmed.GetStart());
 		}
-		//else if (ackRangeConfirmed.GetStart() == ack)
-		//{
-		//	mConfirmAcks.pop_back();
-		//}
+		else if (ackRangeConfirmed.GetNext() < ack)
+		{
+			mConfirmAcks.pop_front();
+		}
 
 		std::string logLine;
 		for (auto &el : mConfirmAcks)
