@@ -14,7 +14,13 @@ public:
 	NETWORKLIBRARY_API const char* GetBufferPtr() const { return mBuffer; }
 	NETWORKLIBRARY_API uint32_t GetLength() const { return mHead; }
 
-	NETWORKLIBRARY_API virtual ~MemoryStream() { std::free(mBuffer); }
+	NETWORKLIBRARY_API virtual ~MemoryStream();
+
+	MemoryStream(MemoryStream&& rhs);
+	MemoryStream& operator=(MemoryStream &&rhs);
+
+	MemoryStream(MemoryStream&) = delete;
+	MemoryStream& operator=(MemoryStream&) = delete;
 protected:
 	char* mBuffer;
 	uint32_t mHead;

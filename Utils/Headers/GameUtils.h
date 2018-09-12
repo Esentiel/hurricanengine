@@ -3,12 +3,18 @@
 #include "stdafx.h"
 #include "Logger.h"
 
+#ifdef UTILITYLIBRARY_EXPORTS
+#define UTILITYLIBRARY_API __declspec(dllexport)
+#else
+#define UTILITYLIBRARY_API __declspec(dllimport)
+#endif
+
 class GameUtils
 {
 public:
 	GameUtils();
-	static Logger* GetLogger();
-	static void InitLoger(const std::string& path);
+	static UTILITYLIBRARY_API Logger* GetLogger();
+	static UTILITYLIBRARY_API void InitLoger(const std::string& name);
 	~GameUtils();
 private: 
 	static std::unique_ptr<Logger> mLogger;

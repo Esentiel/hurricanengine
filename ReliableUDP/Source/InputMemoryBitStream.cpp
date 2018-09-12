@@ -7,6 +7,16 @@ InputMemoryBitStream::InputMemoryBitStream(char * inBuffer, int inHead) : Memory
 }
 
 
+InputMemoryBitStream::InputMemoryBitStream(InputMemoryBitStream&& rhs) : MemoryStream(std::move(rhs))
+{
+}
+
+InputMemoryBitStream& InputMemoryBitStream::operator=(InputMemoryBitStream &&rhs)
+{
+	MemoryStream::operator=(std::move(rhs));
+	return *this;
+}
+
 InputMemoryBitStream::~InputMemoryBitStream()
 {
 }

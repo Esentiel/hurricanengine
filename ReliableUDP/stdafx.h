@@ -15,14 +15,25 @@
 #include <string>
 #include <vector>
 #include <unordered_map>
+#include <map>
+#include <array>
 #include <queue>
 #include <iostream>
 #include <algorithm>
 #include <chrono>
+#include <cstdint>
 #include "targetver.h"
+
+#include <fstream>
 
 #include <stdio.h>
 #include <tchar.h>
+#include <assert.h>
 
+#include "GameUtils.h"
 
-// TODO: reference additional headers your program requires here
+#define MAX_PACKET_SIZE 1280 //size in bytes w/o headers
+#define MAX_SEND_ATTEMPTS 100
+#define HEADER_SIZE 7 // bytes
+
+using PacketSequenceNumber = uint16_t;

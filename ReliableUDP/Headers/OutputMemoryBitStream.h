@@ -34,6 +34,9 @@ public:
 		WriteBits(&inData, inBitCount);
 	}
 
+	OutputMemoryBitStream(OutputMemoryBitStream&) = delete;
+	OutputMemoryBitStream& operator=(OutputMemoryBitStream) = delete;
+
 private:
 	void ReallocBuffer(uint32_t inNewBitCapacity);
 };

@@ -24,7 +24,7 @@
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v141</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
@@ -77,13 +77,14 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>NETWORKLIBRARY_EXPORTS;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(ProjectDir)Headers;$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Headers;$(ProjectDir);$(SolutionDir)Utils\Headers;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>ws2_32.lib;Utils.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(OutDir);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -95,7 +96,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>NETWORKLIBRARY_EXPORTS;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(ProjectDir)Headers;$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Headers;$(ProjectDir);$(SolutionDir)Utils\Headers;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
@@ -103,7 +104,8 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>ws2_32.lib;Utils.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(OutDir);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">
@@ -115,7 +117,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>NETWORKLIBRARY_EXPORTS;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(ProjectDir)Headers;$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Headers;$(ProjectDir);$(SolutionDir)Utils\Headers;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
@@ -123,32 +125,38 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>ws2_32.lib;Utils.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(OutDir);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Headers\CommunicationManager.h" />
+    <ClInclude Include="Headers\EndpointManager.h" />
     <ClInclude Include="Headers\AckRange.h" />
-    <ClInclude Include="Headers\DeliveryNotificationManager.h" />
-    <ClInclude Include="Headers\InFlightPacket.h" />
     <ClInclude Include="Headers\InputMemoryBitStream.h" />
     <ClInclude Include="Headers\MemoryStream.h" />
     <ClInclude Include="Headers\OutputMemoryBitStream.h" />
     <ClInclude Include="Headers\UDP\SocketAddress.h" />
     <ClInclude Include="Headers\UDP\SocketAddressFactory.h" />
     <ClInclude Include="Headers\UDP\SocketUtil.h" />
+    <ClInclude Include="Headers\MessageQueue.h" />
+    <ClInclude Include="Headers\Message.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Headers\targetver.h" />
-    <ClInclude Include="Headers\TransmissionData.h" />
     <ClInclude Include="Headers\UDP\UDPSocket.h" />
     <ClInclude Include="Headers\UDP\UDPSocketFactory.h" />
+    <ClInclude Include="Headers\WorkQueue.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Source.cpp" />
+    <ClCompile Include="Source\Message.cpp" />
+    <ClCompile Include="Source\CommunicationManager.cpp" />
+    <ClCompile Include="Source\EndpointManager.cpp" />
+    <ClCompile Include="Source\MessageQueue.cpp" />
     <ClCompile Include="Source\AckRange.cpp" />
-    <ClCompile Include="Source\DeliveryNotificationManager.cpp" />
-    <ClCompile Include="Source\InFlightPacket.cpp" />
     <ClCompile Include="Source\InputMemoryBitStream.cpp" />
     <ClCompile Include="Source\MemoryStream.cpp" />
     <ClCompile Include="Source\OutputMemoryBitStream.cpp" />
@@ -161,7 +169,6 @@
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">stdafx.h</PrecompiledHeaderFile>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">stdafx.h</PrecompiledHeaderFile>
     </ClCompile>
-    <ClCompile Include="Source\TransmissionData.cpp" />
     <ClCompile Include="Source\UDP\SocketAddress.cpp" />
     <ClCompile Include="Source\UDP\SocketAddressFactory.cpp" />
     <ClCompile Include="Source\UDP\UDPSocket.cpp" />

@@ -3,28 +3,25 @@
 #include "OutputMemoryBitStream.h"
 #include "InputMemoryBitStream.h"
 
-#ifdef NETWORKLIBRARY_EXPORTS
-#define NETWORKLIBRARY_API __declspec(dllexport)
-#else
-#define NETWORKLIBRARY_API __declspec(dllimport)
-#endif
-
 using PacketSequenceNumber = uint16_t;
 
 class AckRange
 {
 public:
-	NETWORKLIBRARY_API AckRange();
-	NETWORKLIBRARY_API AckRange(PacketSequenceNumber start);
-	NETWORKLIBRARY_API ~AckRange();
+	AckRange();
+	AckRange(PacketSequenceNumber start);
+	AckRange(PacketSequenceNumber start, uint8_t cnt);
+	~AckRange();
 
-	NETWORKLIBRARY_API bool ExtendIfShould(PacketSequenceNumber inSequenceNumber);
-	NETWORKLIBRARY_API void Write(OutputMemoryBitStream& inPacket) const;
-	NETWORKLIBRARY_API void Read(InputMemoryBitStream& inPacket);
-	NETWORKLIBRARY_API PacketSequenceNumber GetStart() const;
-	NETWORKLIBRARY_API PacketSequenceNumber GetCount() const;
+	bool ExtendIfShould(PacketSequenceNumber inSequenceNumber);
+	bool ExtendIfShould(PacketSequenceNumber inSequenceNumber, uint8_t count);
+	void Reduce(uint8_t count);
+	PacketSequenceNumber GetStart() const;
+	PacketSequenceNumber GetEnd() const;
+	uint8_t GetCount() const;
+	PacketSequenceNumber GetNext() const;
 private:
-	uint16_t mCount;
+	uint8_t mCount;
 	PacketSequenceNumber mStart;
 };
 

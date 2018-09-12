@@ -7,10 +7,18 @@ AckRange::AckRange() : mStart(0), mCount(0)
 }
 
 
-AckRange::AckRange(PacketSequenceNumber start) : mStart(start), mCount(0)
+AckRange::AckRange(PacketSequenceNumber start) : 
+	mStart(start), 
+	mCount(1)
 {
 }
 
+
+AckRange::AckRange(PacketSequenceNumber start, uint8_t cnt) : 
+	mStart(start), 
+	mCount(cnt)
+{
+}
 
 AckRange::~AckRange()
 {
@@ -21,7 +29,9 @@ bool AckRange::ExtendIfShould(PacketSequenceNumber inSequenceNumber)
 {
 	if (inSequenceNumber == mStart + mCount)
 	{
+		
 		++mCount;
+		//LogDebug("ExtendIfShould: seq=%d, count=%d", inSequenceNumber, mCount);
 		return true;
 	}
 	else
@@ -30,39 +40,31 @@ bool AckRange::ExtendIfShould(PacketSequenceNumber inSequenceNumber)
 	}
 }
 
-
-void AckRange::Write(OutputMemoryBitStream& inPacket) const
+bool AckRange::ExtendIfShould(PacketSequenceNumber inSequenceNumber, uint8_t count)
 {
-	inPacket.Write(mStart);
-	bool hasCount = mCount > 1;
-	inPacket.Write(hasCount);
-	if (hasCount)
+	if (inSequenceNumber == mStart + mCount)
 	{
-		//let's assume you want to ack max of 8 bits...
-		uint32_t countMinusOne = mCount - 1;
-		uint8_t countToAck = countMinusOne > 255 ?
-			255 : static_cast<uint8_t>(countMinusOne);
-		inPacket.Write(countToAck);
+		mCount += count;
+		return true;
 	}
-}
-
-
-void AckRange::Read(InputMemoryBitStream& inPacket)
-{
-	inPacket.Read(mStart);
-	bool hasCount = false;
-	inPacket.Read(hasCount);
-	if (hasCount)
+	else if (mStart == inSequenceNumber)
 	{
-		uint8_t countMinusOne = 0;
-		inPacket.Read(countMinusOne);
-		mCount = countMinusOne + 1;
+		if (count > mCount)
+			mCount = count;
+		return true;
 	}
 	else
 	{
-		//default!
-		mCount = 1;
+		return false;
 	}
+}
+
+void AckRange::Reduce(uint8_t count)
+{
+	if (count > mCount)
+		std::cerr << "AckRange::Reduce wrong counter" << std::endl;
+	mStart += count;
+	mCount -= count;
 }
 
 PacketSequenceNumber AckRange::GetStart() const
@@ -70,7 +72,17 @@ PacketSequenceNumber AckRange::GetStart() const
 	return mStart;
 }
 
-PacketSequenceNumber AckRange::GetCount() const
+PacketSequenceNumber AckRange::GetEnd() const
+{
+	return mStart + mCount - 1;
+}
+
+uint8_t AckRange::GetCount() const
 {
 	return mCount;
+}
+
+PacketSequenceNumber AckRange::GetNext() const
+{
+	return mStart + mCount;
 }

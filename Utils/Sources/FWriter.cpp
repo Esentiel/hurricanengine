@@ -26,6 +26,7 @@ void FWriter::Flush()
 			mFile << mBuffer->str();
 			mBuffer->str("");
 			mFlushTime = timeNow;
+			mFile.flush();
 		}
 	}
 }

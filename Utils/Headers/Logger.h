@@ -2,6 +2,12 @@
 
 #include "FWriter.h"
 
+#ifdef UTILITYLIBRARY_EXPORTS
+#define UTILITYLIBRARY_API __declspec(dllexport)
+#else
+#define UTILITYLIBRARY_API __declspec(dllimport)
+#endif
+
 class Logger
 {
 public:
@@ -27,6 +33,6 @@ public:
 	}
 
 private:
-	void Log_(LogLevel loglevel, const std::string& str);
+	UTILITYLIBRARY_API void Log_(LogLevel loglevel, const std::string& str);
 	std::unique_ptr<FWriter> mFileWriter;
 };

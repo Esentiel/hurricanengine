@@ -4,6 +4,10 @@
 
 
 
+UDPSocket::UDPSocket(SOCKET& socket) : mSocket(socket), isBlocking(false)
+{
+}
+
 int UDPSocket::Bind(const SocketAddressPtr& bindAddress)
 {
 	int err = bind(mSocket, (sockaddr *)&bindAddress->mSockAddr, bindAddress->GetSize());
@@ -15,7 +19,7 @@ int UDPSocket::Bind(const SocketAddressPtr& bindAddress)
 	return NO_ERROR;
 }
 
-int UDPSocket::SendTo(const void* data, int len, const SocketAddress& to)
+int UDPSocket::SendTo(const char* data, int len, const SocketAddress& to)
 {
 	int byteSentCount = sendto(mSocket,
 		static_cast<const char*>(data),
@@ -33,11 +37,11 @@ int UDPSocket::SendTo(const void* data, int len, const SocketAddress& to)
 	}
 }
 
-int UDPSocket::ReceiveFrom(void* buffer, int len, SocketAddress& from)
+int UDPSocket::ReceiveFrom(char* buffer, int len, SocketAddress& from)
 {
 	int fromLength = from.GetSize();
 	int readByteCount = recvfrom(mSocket,
-		static_cast<char*>(buffer),
+		buffer,
 		len,
 		0, (sockaddr *)&from.mSockAddr,
 		&fromLength);
@@ -70,6 +74,11 @@ int UDPSocket::SetNonBlockingMode(bool shouldBeNonBlocking)
 	{
 		return NO_ERROR;
 	}
+}
+
+UDPSocket::~UDPSocket()
+{
+	Close();
 }
 
 void UDPSocket::Close()
