@@ -47,6 +47,7 @@ protected:
 	uint32_t FindForAllocation(uint32_t blockSize) const;
 	uint32_t GetIndex(void * ptr) const;
 	void ReserveBlocks(uint32_t idx, uint32_t size);
+	uint32_t FindNextFree(uint32_t start) const;
 
 	const uint64_t mPoolSize;
 	const uint32_t mIndicesSize;

@@ -30,15 +30,24 @@ int main()
 
 	MemoryManager::Initialize();
 
-	int *i = new int[20];
+	
 
+	
+
+
+	int *i = new int[20];
 	std::unique_ptr<ss> s = std::make_unique<ss>(58);
+	delete[] i;
+	MemoryManager::dump(10);
+	std::cout << "\n";
+
+	int *ii = new int[40];
 
 	MemoryManager::dump(10);
 
+	delete[] ii;
 
-
-	delete[] i;
+	
 
 	//MemoryPool pool;
 	//ss s;

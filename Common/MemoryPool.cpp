@@ -44,7 +44,8 @@ void MemoryPool::dealloc(void * ptr)
 		uint32_t tmpIdx = idx;
 		do
 		{
-			mIndices->at(idx) = eFree;
+			mIndices->at(tmpIdx) = eFree;
+			tmpIdx++;
 			
 		} while (mIndices->at(tmpIdx) != eFree && mIndices->at(tmpIdx) != eHead);
 
@@ -67,66 +68,32 @@ bool MemoryPool::belongs(void * ptr) const
 
 uint32_t MemoryPool::FindForAllocation(uint32_t blockSize) const
 {
-	uint32_t nextIdx = 0;
-	uint32_t retIdx = 0;
+	uint32_t currHead = mNextToAlloc;
+	uint32_t currIdx = mNextToAlloc;
+	uint32_t currSize = 1;
 
-	for (uint32_t idx = mNextToAlloc; idx < mIndices->size(); )
+	while(currSize != blockSize && currIdx + 1 < mIndices->size())
 	{
-		nextIdx = idx + 1;
-
-		if (idx)
+		if (mIndices->at(currIdx + 1) == eFree)
 		{
-			if (blockSize == 1)
-			{
-				retIdx = idx;
-
-				break;
-			}
-			else
-			{
-				uint32_t tRealSize = blockSize - 1;
-				uint32_t tIdx = idx + 1;
-
-				while (tRealSize && tIdx < mIndices->size())
-				{
-					if (mIndices->at(tIdx) != eFree)
-					{
-						break;
-					}
-					else
-					{
-						if (!--tRealSize)
-						{
-							retIdx = idx;
-
-							break;
-						}
-						tIdx++;
-					}
-				}
-
-				if (retIdx)
-					break;
-				else if (tIdx < mIndices->size())
-					nextIdx = tIdx;
-			}
+			currSize++;
 		}
 		else
 		{
-			retIdx = mNextToAlloc;
-			break;
+			currSize = 1;
+			currHead = FindNextFree(currIdx);
 		}
 
-		idx = nextIdx;
+		currIdx++;
 	}
 
-	return retIdx;
+	return currHead;
 }
 
 uint32_t MemoryPool::GetIndex(void * ptr) const
 {
 	char * tmpPtr = (char*)ptr;
-	const uint32_t idx = (uint32_t)(tmpPtr - mPool);
+	const uint32_t idx = (tmpPtr - mPool) / ALIGNMENT;
 
 	return idx;
 }
@@ -143,4 +110,11 @@ void MemoryPool::ReserveBlocks(uint32_t idx, uint32_t size)
 
 	mNextToAlloc = idx + size;
 	
+}
+
+uint32_t MemoryPool::FindNextFree(uint32_t start) const
+{
+	auto it = std::find_if(mIndices->cbegin() + start, mIndices->cend(), [&](const BlockState &state) { return state == BlockState::eFree; });
+
+	return std::distance(mIndices->cbegin(), it);
 }
