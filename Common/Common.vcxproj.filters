@@ -18,18 +18,27 @@
     <ClCompile Include="Source.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MemoryPool.cpp">
+    <ClCompile Include="Source\MemoryManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MemoryManager.cpp">
+    <ClCompile Include="Source\MemoryPool.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\DefragMemoryPool.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="MemoryPool.h">
+    <ClInclude Include="Headers\MemoryManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="MemoryManager.h">
+    <ClInclude Include="Headers\MemoryPool.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Headers\pool_ptr.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Headers\DefragMemoryPool.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

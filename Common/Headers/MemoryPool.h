@@ -15,7 +15,7 @@ class MemoryPool
 {
 public:
 	MemoryPool();
-	~MemoryPool();
+	virtual ~MemoryPool();
 
 	void* alloc(size_t size);
 	void dealloc(void * ptr);

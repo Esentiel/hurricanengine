@@ -2,7 +2,7 @@
 //
 #include <iostream>
 #include "MemoryManager.h"
-
+#include "Headers/pool_ptr.h"
 
 struct ss
 {
@@ -27,8 +27,19 @@ struct ss
 
 int main()
 {
-
 	MemoryManager::Initialize();
+
+	pool_ptr<ss> pp(new ss(2));
+
+	auto tst = pp.get();
+
+	pp.reset(new ss(3));
+
+	auto tst2 = pp.get();
+
+	///
+
+	
 
 	
 
