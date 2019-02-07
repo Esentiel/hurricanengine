@@ -3,13 +3,11 @@
 
 void* operator new(std::size_t sz)
 {
-	std::cout << "my new" << std::endl;
 	return MemoryManager::Allocate(sz);
 };
 
 void operator delete(void* ptr)
 {
-	std::cout << "my delete" << std::endl;
 	MemoryManager::Deallocate(ptr);
 };
 
