@@ -10,6 +10,9 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Engine", "Engine\Engine.vcx
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ReliableUDP", "ReliableUDP\reliable_udp.vcxproj", "{98289F88-68CA-4D4D-B744-B1B7F562045C}"
+	ProjectSection(ProjectDependencies) = postProject
+		{F00EC453-5F3F-48D8-B457-524028FB445B} = {F00EC453-5F3F-48D8-B457-524028FB445B}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "RenderLib", "RenderLib\RenderLib.vcxproj", "{014FBBB7-BDF6-34B5-AE9B-9375BBA53A1B}"
 EndProject
